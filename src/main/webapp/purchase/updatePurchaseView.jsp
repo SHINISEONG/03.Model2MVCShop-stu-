@@ -1,12 +1,7 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
-<%@ page import = "com.model2.mvc.service.domain.*" %>
-
-<%
-Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
-%>
 
 
-
+Purchase purchaseVO = (Purchase)request.getAttribute("purchase");
 
 
 
@@ -23,7 +18,7 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="updatePurchase" method="post"	action="/updatePurchase.do?tranNo=<%=purchaseVO.getTranNo()%>">
+<form name="updatePurchase" method="post"	action="/updatePurchase.do?tranNo=${purchase.tranNo}">
 
 <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
 	<tr>
@@ -51,8 +46,8 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 	<tr>
 		<td width="104" class="ct_write">구매자아이디</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01"><%=purchaseVO.getBuyer().getUserId() %></td>
-		<input type="hidden" name="buyerId" value="<%=purchaseVO.getBuyer().getUserId() %>">
+		<td class="ct_write01">${purchase.buyer.userId}</td>
+		<input type="hidden" name="buyerId" value="${purchase.buyer.userId}"/>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -63,8 +58,8 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 		<td class="ct_write01">
 			<select 	name="paymentOption" 	class="ct_input_g" style="width: 100px; height: 19px" 
 							maxLength="20">
-				<option value="1" <%=purchaseVO.getPaymentOption().equals("1")?" selected ":"" %>>현금구매</option>
-				<option value="2" <%=purchaseVO.getPaymentOption().equals("2")?" selected ":"" %>>신용구매</option>
+				<option value="1" ${purchase.paymentOption eq '1' ? " selected " : "" }>현금구매</option>
+				<option value="2" ${purchase.paymentOption eq '2' ? " selected " : "" }>신용구매</option>
 			</select>
 		</td>
 	</tr>
@@ -76,7 +71,7 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<input 	type="text" name="receiverName" 	class="ct_input_g" style="width: 100px; height: 19px" 
-							maxLength="20" value="<%=purchaseVO.getReceiverName() %>" />
+							maxLength="20" value="${purchase.receiverName}" />
 		</td>
 	</tr>
 	<tr>
@@ -87,7 +82,7 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<input 	type="text" name="receiverPhone" class="ct_input_g" style="width: 100px; height: 19px" 
-							maxLength="20" value="<%=purchaseVO.getReceiverPhone() %>" />
+							maxLength="20" value="${purchase.receiverPhone}" />
 		</td>
 	</tr>
 
@@ -99,7 +94,7 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<input 	type="text" name="receiverAddr" class="ct_input_g" style="width: 100px; height: 19px" 
-							maxLength="20" value="<%=purchaseVO.getDivyAddr() %>" />
+							maxLength="20" value="${purchase.divyAddr}" />
 		</td>
 	</tr>
 	<tr>
@@ -110,7 +105,7 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<input 	type="text" name="receiverRequest" 	class="ct_input_g" style="width: 100px; height: 19px" 
-							maxLength="20" value="<%=purchaseVO.getDivyRequest() %>" />
+							maxLength="20" value="${purchase.divyRequest}" />
 		</td>
 	</tr>
 	<tr>

@@ -51,39 +51,44 @@ public class PurchaseDAO {
 
 	public Purchase findPurchase(int tranNo) throws Exception {
 		Connection con = DBUtil.getConnection();
-		PreparedStatement stmt = con.prepareStatement("SELECT * FROM transaction WHERE tran_no = ?");
-
+		PreparedStatement stmt = con.prepareStatement("SELECT "
+				+ "									   tran_no, prod_no, buyer_id, payment_option, receiver_name, "
+				+ "									   receiver_phone, dlvy_addr, dlvy_request, NVL(tran_status_code,0) \"tran_status_code\", "
+				+ "									   order_date, dlvy_date "
+				+ "									   FROM transaction "
+				+ "									   WHERE tran_no = ?");
+		
 		stmt.setInt(1, tranNo);
 
 		ResultSet rs = stmt.executeQuery();
 
-		Purchase purchaseVO = null;
-		Product productVO = null;
-		User userVO = null;
+		Purchase purchase = null;
+		Product product = null;
+		User user = null;
 
 		while (rs.next()) {
-			productVO = productService.getProduct(rs.getInt("PROD_NO"));
-			System.out.println("purDAO로 proVO잘 넘어와?" + productVO);
+			product = productService.getProduct(rs.getInt("PROD_NO"));
+			System.out.println("purDAO로 proVO잘 넘어와?" + product);
 
-			userVO = userService.getUser(rs.getString("BUYER_ID"));
-			System.out.println("purDAO로 userVO잘 넘어와?" + userVO);
+			user = userService.getUser(rs.getString("BUYER_ID"));
+			System.out.println("purDAO로 userVO잘 넘어와?" + user);
 
-			purchaseVO = new Purchase();
-			purchaseVO.setTranNo(rs.getInt("TRAN_NO"));
-			purchaseVO.setPurchaseProd(productVO);
-			purchaseVO.setBuyer(userVO);
-			purchaseVO.setPaymentOption(rs.getString("PAYMENT_OPTION"));
-			purchaseVO.setReceiverName(rs.getString("RECEIVER_NAME"));
-			purchaseVO.setReceiverPhone(rs.getString("RECEIVER_PHONE"));
-			purchaseVO.setDivyAddr(rs.getString("DLVY_ADDR"));
-			purchaseVO.setDivyRequest(rs.getString("DLVY_REQUEST"));
-			purchaseVO.setTranCode(rs.getString("TRAN_STATUS_CODE"));
-			purchaseVO.setOrderDate(rs.getDate("ORDER_DATE"));
-			purchaseVO.setDivyDate(rs.getString("DLVY_DATE"));
+			purchase = new Purchase();
+			purchase.setTranNo(rs.getInt("TRAN_NO"));
+			purchase.setPurchaseProd(product);
+			purchase.setBuyer(user);
+			purchase.setPaymentOption(rs.getString("PAYMENT_OPTION"));
+			purchase.setReceiverName(rs.getString("RECEIVER_NAME"));
+			purchase.setReceiverPhone(rs.getString("RECEIVER_PHONE"));
+			purchase.setDivyAddr(rs.getString("DLVY_ADDR"));
+			purchase.setDivyRequest(rs.getString("DLVY_REQUEST"));
+			purchase.setTranCode(rs.getString("TRAN_STATUS_CODE").trim());
+			purchase.setOrderDate(rs.getDate("ORDER_DATE"));
+			purchase.setDivyDate(rs.getString("DLVY_DATE"));
 
 		}
 		con.close();
-		return purchaseVO;
+		return purchase;
 	}// end of findPurchase()
 
 	public Map<String, Object> getPurchaseList(Search search, String userId) throws Exception {
@@ -92,7 +97,7 @@ public class PurchaseDAO {
 		
 		Connection con = DBUtil.getConnection();
 
-		String sql = "SELECT tran_no, buyer_id, receiver_name, receiver_phone, tran_status_code FROM transaction WHERE buyer_id = ? ORDER BY tran_no";
+		String sql = "SELECT tran_no, buyer_id, receiver_name, receiver_phone, NVL(tran_status_code,0) \"TRAN_STATUS_CODE\" FROM transaction WHERE buyer_id = ? ORDER BY tran_no";
 
 		int totalCount = getTotalCount(sql, userId);
 		
@@ -124,7 +129,7 @@ public class PurchaseDAO {
 				purchase.setBuyer(user);
 				purchase.setReceiverName(rs.getString("RECEIVER_NAME"));
 				purchase.setReceiverPhone(rs.getString("RECEIVER_PHONE"));
-				purchase.setTranCode(rs.getString("TRAN_STATUS_CODE"));
+				purchase.setTranCode(rs.getString("TRAN_STATUS_CODE").trim());
 
 				list.add(purchase);
 				

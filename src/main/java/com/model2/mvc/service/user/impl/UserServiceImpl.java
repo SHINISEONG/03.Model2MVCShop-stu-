@@ -3,9 +3,9 @@ package com.model2.mvc.service.user.impl;
 import java.util.Map;
 
 import com.model2.mvc.common.Search;
+import com.model2.mvc.service.domain.User;
 import com.model2.mvc.service.user.UserService;
 import com.model2.mvc.service.user.dao.UserDAO;
-import com.model2.mvc.service.domain.User;
 
 
 public class UserServiceImpl implements UserService{

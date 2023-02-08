@@ -14,11 +14,12 @@ public class GetProductAction extends Action {
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
 		String menu = request.getParameter("menu");
-		System.out.println(menu);
+		System.out.println("get product 내부 prodNo : " + prodNo);
+		System.out.println("get product 내부 menu : " + menu);
 		ProductService service = new ProductServiceImpl();
-		Product vo = service.getProduct(prodNo);
+		Product product = service.getProduct(prodNo);
 
-		request.setAttribute("productVO", vo);
+		request.setAttribute("product", product);
 		request.setAttribute("menu", menu);
 		// TODO navigating 방식 및 URI 체크
 		return "forward:/product/getProductView.jsp";

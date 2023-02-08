@@ -1,12 +1,5 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
-<%@ page import = "com.model2.mvc.service.domain.*" %>
-<%
-Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
-%>
-
-
-
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -50,7 +43,7 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="105">
-					<%=purchaseVO.getTranNo() %></td>
+					${purchase.purchaseProd.prodNo}</td>
 					<td></td>
 				</tr>
 			</table>
@@ -64,7 +57,7 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 			구매자아이디 <img	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01"><%=purchaseVO.getBuyer().getUserId() %></a></td>
+		<td class="ct_write01">${purchase.buyer.userId}</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -74,13 +67,15 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 		<td width="104" class="ct_write">구매방법</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<%if(purchaseVO.getPaymentOption()!=null) {%>
-				<%if(purchaseVO.getPaymentOption().equals("1")) { %>		
+			<c:choose>
+				<c:when test="${purchase.paymentOption eq '1' }">
 					현금구매
-				<%} else if(purchaseVO.getPaymentOption().equals("2")) { %>
+				</c:when>
+				<c:when test="${purchase.paymentOption eq '2' }">
 					신용구매
-				<%} %>
-			<%} %>
+				</c:when>
+			</c:choose>
+			
 		</td>
 	</tr>
 	<tr>
@@ -89,7 +84,7 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 	<tr>
 		<td width="104" class="ct_write">구매자이름</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01"><%=purchaseVO.getReceiverName() %></td>
+		<td class="ct_write01">${purchase.receiverName}</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -97,7 +92,7 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 	<tr>
 		<td width="104" class="ct_write">구매자연락처</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01"><%=purchaseVO.getReceiverPhone() %></td>
+		<td class="ct_write01">${purchase.receiverPhone}</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -105,7 +100,7 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 	<tr>
 		<td width="104" class="ct_write">구매자주소</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01"><%=purchaseVO.getDivyAddr() %></td>
+		<td class="ct_write01">${purchase.divyAddr}</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -113,7 +108,7 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 	<tr>
 		<td width="104" class="ct_write">구매요청사항</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01"><%=purchaseVO.getDivyRequest() %></td>
+		<td class="ct_write01">${purchase.divyRequest}</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -121,7 +116,7 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 	<tr>
 		<td width="104" class="ct_write">배송희망일</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01"><%=purchaseVO.getDivyDate() %></td>
+		<td class="ct_write01">${purchase.divyDate}</td>
 	</tr>
 
 	<tr>
@@ -131,7 +126,7 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 	<tr>
 		<td width="104" class="ct_write">주문일</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01"><%=purchaseVO.getOrderDate() %></td>
+		<td class="ct_write01">${purchase.orderDate}</td>
 	</tr>
 
 	<tr>
@@ -150,7 +145,7 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchaseVO");
 						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
-						<a href="/updatePurchaseView.do?tranNo=<%=purchaseVO.getTranNo() %>">수정</a>
+						<a href="/updatePurchaseView.do?tranNo=${purchase.tranNo}">수정</a>
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23"/>

@@ -17,21 +17,21 @@ public class AddProductAction extends Action {
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		/*ProductVO productVO = request.getAttribute("productVO");
 		if()*/
-		Product productVO=new Product();
+		Product product=new Product();
 		String prodManuDateSQL = request.getParameter("manuDate").replaceAll("-", "");
 		 
 		
-		productVO.setProdName(request.getParameter("prodName"));
-		productVO.setProdDetail(request.getParameter("prodDetail"));
-		productVO.setManuDate(prodManuDateSQL);
-		productVO.setPrice(Integer.parseInt(request.getParameter("price")));
-		productVO.setFileName(request.getParameter("fileName"));
+		product.setProdName(request.getParameter("prodName"));
+		product.setProdDetail(request.getParameter("prodDetail"));
+		product.setManuDate(prodManuDateSQL);
+		product.setPrice(Integer.parseInt(request.getParameter("price")));
+		product.setFileName(request.getParameter("fileName"));
 		
 		
-		System.out.println(productVO);
-		request.setAttribute("productVO", productVO);
+		System.out.println(product);
+		request.setAttribute("product", product);
 		ProductService service=new ProductServiceImpl();
-		service.addProduct(productVO);
+		service.addProduct(product);
 		
 		//TODO 아래 resultPage navigating 방식과 URI확인 철저히 하기 
 		return "forward:/product/addProductView.jsp";

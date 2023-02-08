@@ -1,23 +1,9 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
-<%@ page import = "com.model2.mvc.service.domain.Product" %>
-
-<%
-Product productVO = (Product)request.getAttribute("productVO");
-
-String menu = request.getParameter("menu");
-
-Boolean updateChecker=false;
-
-if(request.getParameter("updateChecker") != null) {
-	updateChecker = Boolean.parseBoolean(request.getParameter("updateChecker"));
-}
-
-System.out.println(updateChecker);
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
-<title>상품수정</title>
+<title>상품조회</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
@@ -74,11 +60,14 @@ function resetData(){
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="93%" class="ct_ttl01">
-					<% if(menu.equals("manage")) { %>
+					<c:choose>
+						<c:when test = "${param.menu eq 'manage'}">
 							상품수정
-						<% } else if(menu.equals("search")){ %>
+						</c:when>
+						<c:when test = "${param.menu eq 'search'}">
 							상품상세조회
-						<%}%>
+						</c:when>
+					</c:choose>
 					
 					</td>
 					<td width="20%" align="right">&nbsp;</td>
@@ -95,21 +84,21 @@ function resetData(){
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
-	<% if(menu.equals("search")) { %>
-	<tr>
-		<td width="104" class="ct_write">
-			상품번호 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-		</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td width="105"><%=productVO.getProdNo()%></td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<%} %>
+	<c:if test = "${param.menu eq 'search'}">
+		<tr>
+			<td width="104" class="ct_write">
+				상품번호 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			</td>
+			<td bgcolor="D6D6D6" width="1"></td>
+			<td class="ct_write01">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td width="105">${product.prodNo } </td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</c:if>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
@@ -122,12 +111,16 @@ function resetData(){
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="105">
-						<%if(menu.equals("manage")) { %>
-						<input type="text" name="prodName" value ="<%=productVO.getProdName()%>" class="ct_input_g" 
-									style="width: 100px; height: 19px" maxLength="20">
-						<%} else if(menu.equals("search")) {%>
-								<%=productVO.getProdName() %>
-						<%}%>
+						<c:choose>
+							<c:when test = "${param.menu eq 'manage'}">
+								<input type="text" name="prodName" value ="${product.prodName }" class="ct_input_g" 
+								       style="width: 100px; height: 19px" maxLength="20">
+							</c:when>
+							
+							<c:when test = "${param.menu eq 'search'}">
+								${product.prodName }
+							</c:when>
+						</c:choose>
 					</td>
 				</tr>
 			</table>
@@ -137,21 +130,21 @@ function resetData(){
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	
-	<%if(menu.equals("search")) { %>
-	<tr>
-		<td width="104" class="ct_write">
-		상품이미지 <img	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-		</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">
-						<%=productVO.getFileName()%>
-		</td>
-	</tr>
-	
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<%} %>
+	<c:if test = "${param.menu eq 'search'}">
+		<tr>
+			<td width="104" class="ct_write">
+			상품이미지 <img	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			</td>
+			<td bgcolor="D6D6D6" width="1"></td>
+			<td class="ct_write01">
+							${product.fileName }
+			</td>
+		</tr>
+		
+		<tr>
+			<td height="1" colspan="3" bgcolor="D6D6D6"></td>
+		</tr>
+	</c:if>
 	
 	<tr>
 		<td width="104" class="ct_write">
@@ -161,12 +154,16 @@ function resetData(){
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<%if(menu.equals("manage")) { %>
-						<input type="text" name="prodDetail" value ="<%=productVO.getProdDetail()%>" class="ct_input_g" 
+			<c:choose>
+				<c:when test = "${param.menu eq 'manage'}">
+						<input type="text" name="prodDetail" value ="${product.prodDetail }" class="ct_input_g" 
 								style="width: 100px; height: 19px" maxLength="20">
-			<%} else if (menu.equals("search")){ %>
-				<%= productVO.getProdDetail() %>
-			<%} %>
+				</c:when>
+				
+				<c:when test = "${param.menu eq 'search'}">
+					${product.prodDetail }
+				</c:when>
+			</c:choose>
 		</td>
 	</tr>
 	<tr>
@@ -175,18 +172,22 @@ function resetData(){
 	<tr>
 		<td width="104" class="ct_write">
 			제조일자 
-			<%if(menu.equals("manage")) { %>			
-			<img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-			<%} %>
+			<c:if test = "${param.menu eq 'manage'}">			
+				<img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			</c:if>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<%if(menu.equals("manage")) { %>
-						<input type="text" name="manuDate" value ="<%=productVO.getManuDate()%>" class="ct_input_g" 
+			<c:choose>
+				<c:when test = "${param.menu eq 'manage'}">
+						<input type="text" name="manuDate" value ="${product.manuDate}" class="ct_input_g" 
 								style="width: 100px; height: 19px" maxLength="20">
-			<%} else if (menu.equals("search")){ %>
-				<%= productVO.getManuDate() %>
-			<%} %>
+				</c:when>
+				
+				<c:when test = "${param.menu eq 'search'}">
+					${product.manuDate}
+				</c:when>
+			</c:choose>
 		</td>
 	</tr>
 	<tr>
@@ -195,48 +196,53 @@ function resetData(){
 	<tr>
 		<td width="104" class="ct_write">
 			가격 
-			<%if(menu.equals("manage")) { %>	
-			<img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-			<%} %>
+			<c:if test = "${param.menu eq 'manage'}">	
+				<img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			</c:if>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<%if(menu.equals("manage")) { %>
-						<input type="text" name="price" value ="<%=productVO.getPrice()%>" class="ct_input_g" 
+			<c:choose>
+				<c:when test = "${param.menu eq 'manage'}">
+						<input type="text" name="price" value ="${product.price}" class="ct_input_g" 
 								style="width: 100px; height: 19px" maxLength="20">
-			<%} else if (menu.equals("search")){ %>
-				<%= productVO.getPrice() %>
-			<%} %>
+				</c:when>
+			
+				<c:when test = "${param.menu eq 'manage'}">
+					${product.price}
+				</c:when>
+			</c:choose>
+			
 		</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
-	<%if(menu.equals("manage")) { %>
-	<tr>
-		<td width="104" class="ct_write">상품이미지</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">
-
-						<input type="text" name="fileName" value ="<%=productVO.getFileName()%>" class="ct_input_g" 
-								style="width: 100px; height: 19px" maxLength="20">
-		</td>
-	</tr>
+	<c:if test = "${param.menu eq 'manage'}">
+		<tr>
+			<td width="104" class="ct_write">상품이미지</td>
+			<td bgcolor="D6D6D6" width="1"></td>
+			<td class="ct_write01">
 	
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<%} %>
-	<%if(menu.equals("search")) { %>
-	<tr>
-		<td width="104" class="ct_write">등록일자</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">2012-10-14</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<%} %>
+							<input type="text" name="fileName" value ="${product.fileName}" class="ct_input_g" 
+									style="width: 100px; height: 19px" maxLength="20">
+			</td>
+		</tr>
+		
+		<tr>
+			<td height="1" colspan="3" bgcolor="D6D6D6"></td>
+		</tr>
+	</c:if>
+	<c:if test = "${param.menu eq 'search'}">
+		<tr>
+			<td width="104" class="ct_write">등록일자</td>
+			<td bgcolor="D6D6D6" width="1"></td>
+			<td class="ct_write01">${product.regDate }</td>
+		</tr>
+		<tr>
+			<td height="1" colspan="3" bgcolor="D6D6D6"></td>
+		</tr>
+	</c:if>
 </table>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 10px;">
@@ -248,14 +254,19 @@ function resetData(){
 				<td width="17" height="23">
 					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 				</td>
-				<%if(!updateChecker) {%>
-					<td background="/images/ct_btnbg02.gif" class="ct_btn01"  style="padding-top: 3px;">
-					<%if(menu.equals("manage")) { %>
-						<%session.setAttribute("prodNo", request.getParameter("prodNo")); %>
-						<a href="javascript:fncAddProduct();">수정</a>
-					<%} else if(menu.equals("search")) {%>
-						<a href="/addPurchaseView.do?prodNo=<%=productVO.getProdNo()%>">구매</a>
-					<%} %>
+				<c:choose>
+					<c:when test = "${!param.updateChecker}">
+						<td background="/images/ct_btnbg02.gif" class="ct_btn01"  style="padding-top: 3px;">
+					<c:choose>
+						<c:when test = "${param.menu eq 'manage'}">
+							<input type = "hidden" name = "prodNo" value = "${param.prodNo }"/>
+							<input type = "hidden" name = "menu" value = "search"/>
+							<a href="javascript:fncAddProduct();">수정</a>
+						</c:when>
+						<c:when test = "${param.menu eq 'search'}">
+							<a href="/addPurchaseView.do?prodNo=${product.prodNo }">구매</a>
+						</c:when>
+					</c:choose>
 					</td>
 					
 					<td width="14" height="23">
@@ -269,18 +280,23 @@ function resetData(){
 					
 					
 						<a href="javascript:history.go(-1)">
-						<%if(menu.equals("manage")) { %>
-							취소
-						<%} else if(menu.equals("search")) {%>
-							이전
-						<%} %>
+						<c:choose>
+							<c:when test = "${param.menu eq 'manage'}">
+								취소
+							</c:when>
+							<c:when test = "${param.menu eq 'search'}">
+								이전
+							</c:when>
+						</c:choose>
 						</a>
 					</td>
-				<%} else {%>
+				</c:when>
+				<c:when test = "${param.updateChecker}">
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01"  style="padding-top: 3px;">
 					<a href="/listProduct.do?menu=manage">확인</a>
 					</td>
-				<%} %>
+				</c:when>
+				</c:choose>
 				
 				<td width="14" height="23">
 					<img src="/images/ct_btnbg03.gif" width="14" height="23"/>

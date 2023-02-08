@@ -12,6 +12,11 @@ public class User {
 	private String role;
 	private String ssn;
 	private String phone;
+	
+	private String phone1;
+	private String phone2;
+	private String phone3;
+	
 	private String addr;
 	private String email;
 	private Date regDate;
@@ -56,6 +61,11 @@ public class User {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+		if(phone != null && phone.length() !=0 ){
+			phone1 = phone.split("-")[0];
+			phone2 = phone.split("-")[1];
+			phone3 = phone.split("-")[2];
+		}
 	}
 	public String getAddr() {
 		return addr;
@@ -75,6 +85,17 @@ public class User {
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
 	}
+	
+	public String getPhone1() {
+		return phone1;
+	}
+	public String getPhone2() {
+		return phone2;
+	}
+	public String getPhone3() {
+		return phone3;
+	}
+
 	@Override
 	public String toString() {
 		return "UserVO : [userId] "+userId+" [userName] "+userName+" [password] "+password+" [role] "+ role

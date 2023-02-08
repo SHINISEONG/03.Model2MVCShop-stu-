@@ -57,7 +57,7 @@ public class ProductDAO {
 			productVO.setManuDate(rs.getString("MANUFACTURE_DAY"));
 			productVO.setPrice(rs.getInt("PRICE"));
 			productVO.setRegDate(rs.getDate("REG_DATE"));
-			productVO.setProTranCode(rs.getString("tran_code"));
+			productVO.setProTranCode(rs.getString("tran_code").trim());
 			productVO.setProTranNo(rs.getInt("TRAN_NO"));
 		}
 		con.close();
@@ -113,7 +113,7 @@ public class ProductDAO {
 				product.setProdName(rs.getString("PROD_NAME"));
 				product.setPrice(rs.getInt("PRICE"));
 				product.setRegDate(rs.getDate("REG_DATE"));
-				product.setProTranCode(rs.getString("tran_code"));
+				product.setProTranCode(rs.getString("tran_code").trim());
 				product.setProTranNo(rs.getInt("tran_no"));
 				list.add(product);
 			}
@@ -174,7 +174,7 @@ public class ProductDAO {
 		sql = "SELECT iv2.*, NVL(t.tran_no,0) \"tran_no\" , NVL(t.tran_status_code,0) \"tran_code\" FROM "
 				+ " (SELECT ROWNUM num, iv.* FROM ("+sql+") iv WHERE ROWNUM <= "+(search.getCurrentPage()*search.getPageSize())+") iv2, transaction t "
 				+ " WHERE iv2.prod_no = t.prod_no(+) "
-				+ " AND num >= " + ((search.getCurrentPage()-1)*search.getPageSize()+1) +" ORDER BY num" ;
+				+ " AND num BETWEEN " +((search.getCurrentPage()-1)*search.getPageSize()+1)+" AND "+ (search.getCurrentPage()*search.getPageSize()) +" ORDER BY num" ;
 		
 		System.out.println("UserDAO :: make SQL :: "+ sql);
 		

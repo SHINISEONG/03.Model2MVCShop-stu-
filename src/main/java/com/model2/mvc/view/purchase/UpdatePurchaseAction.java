@@ -16,20 +16,20 @@ public class UpdatePurchaseAction extends Action {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		int tranNo = Integer.parseInt(request.getParameter("tranNo"));
-		Purchase purchaseVO = new Purchase();
+		Purchase purchase = new Purchase();
 		PurchaseService purchaseService = new PurchaseServiceImpl();
 		
-		purchaseVO.setTranNo(tranNo);
-		purchaseVO.setPaymentOption(request.getParameter("paymentOption"));
-		purchaseVO.setReceiverName(request.getParameter("receiverName"));
-		purchaseVO.setReceiverPhone(request.getParameter("receiverPhone"));
-		purchaseVO.setDivyAddr(request.getParameter("receiverAddr"));
-		purchaseVO.setDivyRequest(request.getParameter("receiverRequest"));
-		purchaseVO.setDivyDate(request.getParameter("divyDate"));
+		purchase.setTranNo(tranNo);
+		purchase.setPaymentOption(request.getParameter("paymentOption"));
+		purchase.setReceiverName(request.getParameter("receiverName"));
+		purchase.setReceiverPhone(request.getParameter("receiverPhone"));
+		purchase.setDivyAddr(request.getParameter("receiverAddr"));
+		purchase.setDivyRequest(request.getParameter("receiverRequest"));
+		purchase.setDivyDate(request.getParameter("divyDate"));
 		
-		purchaseService.updatePurchase(purchaseVO);
-		purchaseVO = purchaseService.findPerchase(tranNo);
-		request.setAttribute("purchaseVO", purchaseVO);
+		purchaseService.updatePurchase(purchase);
+		purchase = purchaseService.findPerchase(tranNo);
+		request.setAttribute("purchase", purchase);
 		
 		return "forward:/purchase/getPurchase.jsp";
 	}

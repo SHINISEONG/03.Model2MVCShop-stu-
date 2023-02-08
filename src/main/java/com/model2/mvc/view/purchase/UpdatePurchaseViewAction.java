@@ -15,11 +15,11 @@ public class UpdatePurchaseViewAction extends Action {
 		
 		int tranNo= Integer.parseInt(request.getParameter("tranNo"));
 		
-		Purchase purchaseVO = null;
+		Purchase purchase = null;
 		PurchaseService purchaseService = new PurchaseServiceImpl();
-		purchaseVO = purchaseService.findPerchase(tranNo);
+		purchase = purchaseService.findPerchase(tranNo);
 		
-		request.setAttribute("purchaseVO", purchaseVO);
+		request.setAttribute("purchase", purchase);
 		
 		return "forward:/purchase/updatePurchaseView.jsp";
 	}

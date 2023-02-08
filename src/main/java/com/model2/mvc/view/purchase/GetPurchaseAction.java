@@ -17,8 +17,8 @@ public class GetPurchaseAction extends Action {
 		int tranNo= Integer.parseInt(request.getParameter("tranNo"));
 		
 		PurchaseService purchaseService=new PurchaseServiceImpl();
-		Purchase purchaseVO = purchaseService.findPerchase(tranNo);
-		request.setAttribute("purchaseVO", purchaseVO);
+		Purchase purchase = purchaseService.findPerchase(tranNo);
+		request.setAttribute("purchase", purchase);
 
 		return "forward:/purchase/getPurchase.jsp";
 	}

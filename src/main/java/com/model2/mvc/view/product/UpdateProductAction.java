@@ -2,7 +2,6 @@ package com.model2.mvc.view.product;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.model2.mvc.framework.Action;
 import com.model2.mvc.service.domain.Product;
@@ -14,26 +13,30 @@ public class UpdateProductAction extends Action {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		HttpSession session = request.getSession(true);
 					
-		int prodNo = Integer.parseInt((String)session.getAttribute("prodNo"));
+		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
 		
 		System.out.println("updateAction내부로 prodNo오니?"+prodNo);
 		
-		Product productVO = new Product();
+		Product product = new Product();
+				
+		product.setProdNo(prodNo);
+		product.setProdName(request.getParameter("prodName"));
+		product.setProdDetail(request.getParameter("prodDetail"));
+		product.setManuDate(request.getParameter("manuDate"));
+		product.setPrice(Integer.parseInt(request.getParameter("price")));
+		product.setFileName(request.getParameter("fileName"));
+
+		ProductService productService = new ProductServiceImpl();
+		productService.updateProduct(product);
+		product = productService.getProduct(prodNo);
 		
-		productVO.setProdNo(prodNo);
-		productVO.setProdName(request.getParameter("prodName"));
-		productVO.setProdDetail(request.getParameter("prodDetail"));
-		productVO.setManuDate(request.getParameter("manuDate"));
-		productVO.setPrice(Integer.parseInt(request.getParameter("price")));
-		productVO.setFileName(request.getParameter("fileName"));
-
-		ProductService service = new ProductServiceImpl();
-		service.updateProduct(productVO);
-
+		boolean updateChecker = true;
+		String menu = request.getParameter("menu");
+		request.setAttribute("updateChecker", updateChecker);
+		
 		// TODO navigating 방식 및 URI체크
-		return "redirect:/getProduct.do?prodNo=" + prodNo + "&menu=search&updateChecker=true";
+		return "foward:/getProduct.do?prodNo=" + prodNo + "&menu="+menu;
 	}
 
 }

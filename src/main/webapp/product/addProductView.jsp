@@ -1,11 +1,5 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
-<%@ page import = "com.model2.mvc.service.domain.Product" %>
-
-<%
-Product productVO = (Product)request.getAttribute("productVO");
-
-System.out.println("다시 확인할때 addPV로 잘 넘어왔니?"+productVO);
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -91,12 +85,18 @@ function resetData(){
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="105">
-						<%if(productVO == null ){%>
-						<input type="text" name="prodName" class="ct_input_g" 
-									style="width: 100px; height: 19px" maxLength="20">
-						<%} else {%>
-							<%=productVO.getProdName() %>
-						<%} %>
+						
+						<c:choose>
+							<c:when test = "${empty product }">
+								<input type="text" name="prodName" class="ct_input_g" 
+									   style="width: 100px; height: 19px" maxLength="20">
+							</c:when>
+							
+							<c:when test = "${!empty product }">
+							 ${product.prodName }
+							</c:when>							
+							
+						</c:choose>
 						
 					</td>
 				</tr>
@@ -112,12 +112,18 @@ function resetData(){
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<%if(productVO == null) { %>
-			<input type="text" name="prodDetail" class="ct_input_g" 
-						style="width: 100px; height: 19px" maxLength="10" minLength="6"/>
-			<%} else {%>
-				<%= productVO.getProdDetail() %>
-			<%} %>
+			
+			<c:choose>
+				<c:when test = "${empty product }">
+					<input type="text" name="prodDetail" class="ct_input_g" 
+					       style="width: 100px; height: 19px" maxLength="10" minLength="6"/>
+				</c:when>
+				
+				<c:when test = "${!empty product }">
+					${product.prodDetail }
+				</c:when>
+			</c:choose>
+			
 		</td>
 	</tr>
 	<tr>
@@ -129,14 +135,19 @@ function resetData(){
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<%if(productVO == null) { %>
-			<input type="text" name="manuDate" readonly="readonly" class="ct_input_g"  
+			<c:choose>
+				<c:when test = "${empty product }">
+					<input type="text" name="manuDate" readonly="readonly" class="ct_input_g"  
 						style="width: 100px; height: 19px"	maxLength="10" minLength="6"/>
-				&nbsp;<img src="../images/ct_icon_date.gif" width="15" height="15" 
-										onclick="show_calendar('document.detailForm.manuDate', document.detailForm.manuDate.value)"/>
-			<%} else {%>
-				<%=productVO.getManuDate() %>
-			<%} %>
+					&nbsp;
+					<img src="../images/ct_icon_date.gif" width="15" height="15" 
+					     onclick="show_calendar('document.detailForm.manuDate', document.detailForm.manuDate.value)"/>
+				</c:when>
+				
+				<c:when test = "${!empty product }">
+					${product.manuDate}
+				</c:when>
+			</c:choose>
 		</td>
 	</tr>
 	<tr>
@@ -148,12 +159,16 @@ function resetData(){
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<%if(productVO == null) { %>
-			<input type="text" name="price" 	class="ct_input_g" 
-						style="width: 100px; height: 19px" maxLength="10">&nbsp;원
-			<%} else {%>
-				<%= productVO.getPrice() %>
-			<%} %>
+			<c:choose>
+				<c:when test = "${empty product }">
+					<input type="text" name="price" 	class="ct_input_g" 
+					       style="width: 100px; height: 19px" maxLength="10">&nbsp;원
+				</c:when>
+				
+				<c:when test = "${!empty product }">
+					${product.price}
+				</c:when>
+			</c:choose>
 		</td>
 	</tr>
 	<tr>
@@ -163,12 +178,16 @@ function resetData(){
 		<td width="104" class="ct_write">상품이미지</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<%if(productVO == null) { %>
-			<input		type="text" name="fileName" class="ct_input_g" 
+			<c:choose>
+				<c:when test = "${empty product }">
+					<input	type="text" name="fileName" class="ct_input_g" 
 							style="width: 200px; height: 19px" maxLength="13"/>
-			<%} else {%>
-				<%=productVO.getFileName() %>
-			<%} %>
+				</c:when>
+				
+				<c:when test = "${!empty product }">
+					${product.fileName}
+				</c:when>
+			</c:choose>			
 		</td>
 	</tr>
 	<tr>
@@ -187,11 +206,14 @@ function resetData(){
 				</td>
 				
 				<td background="/images/ct_btnbg02.gif" class="ct_btn01"  style="padding-top: 3px;">
-				<%if(productVO == null) { %>
-					<a href="javascript:fncAddProduct();">등록</a>
-				<%} else {%>
+				<c:choose>
+					<c:when test = "${empty product }">
+						<a href="javascript:fncAddProduct();">등록</a>
+					</c:when>
+					<c:when test = "${!empty product }">
 					<a href="/listProduct.do?menu=manage">확인</a>
-				<%} %>
+					</c:when>
+				</c:choose>				
 				</td>
 				
 				<td width="14" height="23">
@@ -203,11 +225,15 @@ function resetData(){
 				</td>
 				<td background="/images/ct_btnbg02.gif" class="ct_btn01"	 style="padding-top: 3px;">
 				
-				<%if(productVO == null) { %>
-					<a href="javascript:resetData();">취소</a>
-				<%} else {%>
-					<a href="../product/addProductView.jsp;">추가등록</a>
-				<%}%>
+				<c:choose>
+					<c:when test = "${empty product }">
+						<a href="javascript:resetData();">취소</a>
+					</c:when>
+					
+					<c:when test = "${!empty product }">
+						<a href="../product/addProductView.jsp;">추가등록</a>
+					</c:when>
+				</c:choose>
 				</td>
 				<td width="14" height="23">
 					<img src="/images/ct_btnbg03.gif" width="14" height="23"/>

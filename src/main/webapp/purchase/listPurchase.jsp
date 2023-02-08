@@ -1,14 +1,6 @@
-<%@page import="com.model2.mvc.view.user.GetUserAction"%>
 <%@ page contentType="text/html; charset=euc-kr" %>
-<%@ page import="java.util.*"  %>
-<%@ page import="com.model2.mvc.service.domain.*" %>
-<%@ page import="com.model2.mvc.common.*" %>
-<%@ page import="com.model2.mvc.common.util.*" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-List<Purchase> list = (List<Purchase>)request.getAttribute("list");
-Page resultPage=(Page)request.getAttribute("resultPage");
-%>
 
 <html>
 <head>
@@ -46,7 +38,7 @@ Page resultPage=(Page)request.getAttribute("resultPage");
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 10px;">
 	<tr>
-		<td colspan="11" >전체  <%=resultPage.getTotalCount()%> 건수, 현재 <%=resultPage.getCurrentPage()%> 페이지</td>
+		<td colspan="11" >전체 ${resultPage.totalCount} 건수, 현재 ${resultPage.currentPage} 페이지</td>
 	</tr>
 	<tr>
 		<td class="ct_list_b" width="100">No</td>
@@ -67,93 +59,68 @@ Page resultPage=(Page)request.getAttribute("resultPage");
 	</tr>
 
 	
-		<%
-			for(int i=0; i<list.size(); i++) {
-			Purchase purchaseVO = (Purchase)list.get(i);
-		%>
-	<tr class="ct_list_pop">
+	
+		<c:set var = "i" value ="0"/>
+		<c:forEach var ="purchase" items="${list }">
+			<c:set var = "i" value = "${i+1}"/>
+		<tr class="ct_list_pop">
 		<td align="center">
-			<a href="/getPurchase.do?tranNo=<%=purchaseVO.getTranNo()%>"><%=i+1%></a>
+			<a href="/getPurchase.do?tranNo=${purchase.tranNo}">${i}</a>
 		</td>
 		<td></td>
 		<td align="left">
-			<a href="/getUser.do?userId=<%=purchaseVO.getBuyer().getUserId()%>"><%=purchaseVO.getBuyer().getUserId()%></a>
+			<a href="/getUser.do?userId=${purchase.buyer.userId}">${purchase.buyer.userId}</a>
 		</td>
 		<td></td>
-		<td align="left"><%=purchaseVO.getReceiverName()%></td>
+		<td align="left">${purchase.receiverName}</td>
 		<td></td>
-		<td align="left"><%=purchaseVO.getReceiverPhone()%></td>
+		<td align="left">${purchase.receiverPhone}</td>
 		<td></td>
 		<td align="left">
-			현재	
 		
-			<%
-		if (purchaseVO.getTranCode().trim().equals("1")){
-		%>
-							구매완료 상태
-			<%
-		}
-		%>
 		
-			<%
-					if (purchaseVO.getTranCode().trim().equals("2")){
-					%>
-							배송중
-			<%
-					}
-					%>
+		<c:if test="${!(purchase.tranCode eq '0')}">
+				현재
+			<c:choose>
+				<c:when test ="${purchase.tranCode eq '1'}">
+					구매완료
+				</c:when>
 			
-			<%
-						if (purchaseVO.getTranCode().trim().equals("3")){
-						%>
-							배송완료 상태
-			<%
-						}
-						%>
-		
-			 입니다.
+				<c:when test ="${purchase.tranCode eq '2'}">
+					배송중
+				</c:when>
+				
+				<c:when test ="${purchase.tranCode eq '3'}">
+					배송완료
+				</c:when>
+			</c:choose>
+				 상태 입니다.
+		</c:if>
 		</td>
+		
 		<td></td> 
    		<td align="left">
-
-		<%
-		if ((purchaseVO.getTranCode().trim().equals("2"))){
-		%>
-			<a href="/updateTranCode.do?tranNo=<%=purchaseVO.getTranNo()%>&tranCode=3&page=<%=resultPage.getCurrentPage()%>">물건도착</a>
-		<%} %>
-
+		
+		<c:if test = "${purchase.tranCode eq '2'}">
+			<a href="/updateTranCode.do?tranNo=${purchase.tranNo}&tranCode=3&page=${resultPage.currentPage}">물건도착</a>
+		</c:if>
 		</td>
 	</tr>
 	
 	<tr>
 		<td colspan="11" bgcolor="D6D7D6" height="1"></td>
 	</tr>
-<% } %>
-		
+
+</c:forEach>		
 </table>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
 	<tr>
 		<td align="center">
-		<input type="hidden" id="currentPage" name="currentPage" value=""/>
+			<input type="hidden" id="currentPage" name="currentPage" value=""/>
 		   
-			<% if( resultPage.getCurrentPage() <= resultPage.getPageUnit() ){ %>
-					◀ 이전
-			<% }else{ %>
-					<a href="javascript:fncGetPurchaseList('<%=resultPage.getCurrentPage()-1%>')">◀ 이전</a>
-			<% } %>
-
-			<%	for(int i=resultPage.getBeginUnitPage();i<= resultPage.getEndUnitPage() ;i++){	%>
-					<a href="javascript:fncGetPurchaseList('<%=i %>');"><%=i %></a>
-			<% 	}  %>
-	
-			<% if( resultPage.getEndUnitPage() >= resultPage.getMaxPage() ){ %>
-					이후 ▶
-			<% }else{ %>
-					<a href="javascript:fncGetPurchaseList('<%=resultPage.getCurrentPage()+1%>')">이후 ▶</a>
-			<% } %>
-		
-		
+			<c:set var = "pageType" value="purchase" scope="request"/>
+			<jsp:include page="../common/pageNavigator.jsp"/>
 		</td>
 	</tr>
 </table>

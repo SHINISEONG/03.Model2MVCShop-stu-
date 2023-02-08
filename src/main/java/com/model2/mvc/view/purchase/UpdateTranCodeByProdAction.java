@@ -22,25 +22,26 @@ public class UpdateTranCodeByProdAction extends Action {
 		
 		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
 		String tranCode = request.getParameter("tranCode");
+		System.out.println("trantran들어오니?" + tranCode);
 		String searchCondition = request.getParameter("searchCondition");
 		String searchKeyword = request.getParameter("searchKeyword");
-		String page = request.getParameter("page");
+		String currentPage = request.getParameter("currentPage");
 		
 		PurchaseService purchaseService = new PurchaseServiceImpl();
 		ProductService productService = new ProductServiceImpl();
-		Purchase purchaseVO = new Purchase();
-		Product productVO = productService.getProduct(prodNo);
+		Purchase purchase = new Purchase();
+		Product product = productService.getProduct(prodNo);
 		
-		int tranNo = productVO.getProTranNo();
+		int tranNo = product.getProTranNo();
 				
-		purchaseVO.setTranNo(tranNo);
-		purchaseVO.setTranCode(tranCode);
+		purchase.setTranNo(tranNo);
+		purchase.setTranCode(tranCode);
 		
-		purchaseService.updateTranCode(purchaseVO);
+		purchaseService.updateTranCode(purchase);
 		
 		return "forward:/listProduct.do?menu=manage&searchCondition="+searchCondition
 				+"&searchKeyword="+searchKeyword
-				+"&page="+page;
+				+"&currentPage="+currentPage;
 	}
 
 }

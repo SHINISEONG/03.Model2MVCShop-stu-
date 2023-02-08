@@ -16,19 +16,19 @@ public class UpdateTranCodeAction extends Action {
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		PurchaseService purchaseService = new PurchaseServiceImpl();
-		Purchase purchaseVO = new Purchase();
+		Purchase purchase = new Purchase();
 				
 		String tranCode = request.getParameter("tranCode");
 		String tranNo = request.getParameter("tranNo");
 		
-		String page = request.getParameter("page");
+		String currentPage = request.getParameter("page");
 		
-		purchaseVO.setTranNo(Integer.parseInt(tranNo));
-		purchaseVO.setTranCode(tranCode);
+		purchase.setTranNo(Integer.parseInt(tranNo));
+		purchase.setTranCode(tranCode);
 		
-		purchaseService.updateTranCode(purchaseVO);
+		purchaseService.updateTranCode(purchase);
 		
-		return "forward:/listPurchase.do?&page="+page;
+		return "forward:/listPurchase.do?&currentPage="+currentPage;
 	}
 
 }

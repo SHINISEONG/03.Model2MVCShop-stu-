@@ -18,7 +18,7 @@ public class UpdateUserViewAction extends Action{
 		
 		UserService userService=new UserServiceImpl();
 		User user=userService.getUser(userId);
-		
+		System.out.println(user.getPhone());
 		request.setAttribute("user", user);
 		
 		return "forward:/user/updateUser.jsp";

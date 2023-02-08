@@ -8,10 +8,10 @@ import com.model2.mvc.framework.Action;
 import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.domain.Purchase;
 import com.model2.mvc.service.domain.User;
+import com.model2.mvc.service.product.ProductService;
+import com.model2.mvc.service.product.impl.ProductServiceImpl;
 import com.model2.mvc.service.purchase.PurchaseService;
 import com.model2.mvc.service.purchase.impl.PurchaseServiceImpl;
-import com.model2.mvc.service.user.UserService;
-import com.model2.mvc.service.user.impl.UserServiceImpl;
 
 public class AddPurchaseAction extends Action {
 
@@ -19,30 +19,37 @@ public class AddPurchaseAction extends Action {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		ProductService productService = new ProductServiceImpl();
 		HttpSession session = request.getSession(true);
-		Purchase purchaseVO=new Purchase();
-		Product productVO = (Product)session.getAttribute("productVO");
-		User userVO = (User)session.getAttribute("user");
-		System.out.println("session에 세팅된 prodVO in AddPurAct : " + productVO);
-		System.out.println("session에 세팅된 userVO in AddPurAct : " + userVO);
+		Purchase purchase=new Purchase();
 		
-		purchaseVO.setPurchaseProd(productVO);
-		purchaseVO.setBuyer(userVO);
+		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
+		System.out.println("get param prodNo: " + prodNo);
+		Product product = productService.getProduct(prodNo);
 		
-		purchaseVO.setPaymentOption(request.getParameter("paymentOption"));
-		purchaseVO.setReceiverName(request.getParameter("receiverName"));
-		purchaseVO.setReceiverPhone(request.getParameter("receiverPhone"));
-		purchaseVO.setDivyAddr(request.getParameter("receiverAddr"));
-		purchaseVO.setDivyRequest(request.getParameter("receiverRequest"));
-		purchaseVO.setDivyDate(request.getParameter("receiverDate"));
+		User user = (User)session.getAttribute("user");
 		
-		purchaseVO.setTranCode("1");
+		System.out.println("addPurchaseAct로 불러온 prod: " + product);
+		System.out.println("session에 세팅된 userVO in AddPurAct : " + user);
 		
-		System.out.println("addPurchaseAction안에서 모든 값 잘 세팅 됐니?"+purchaseVO);
+		purchase.setPurchaseProd(product);
+		purchase.setBuyer(user);
+		
+		purchase.setPaymentOption(request.getParameter("paymentOption"));
+		purchase.setReceiverName(request.getParameter("receiverName"));
+		purchase.setReceiverPhone(request.getParameter("receiverPhone"));
+		purchase.setDivyAddr(request.getParameter("receiverAddr"));
+		purchase.setDivyRequest(request.getParameter("receiverRequest"));
+		purchase.setDivyDate(request.getParameter("receiverDate"));
+		
+		purchase.setTranCode("1");
+		
+		System.out.println("addPurchaseAction안에서 모든 값 잘 세팅 됐니?"+purchase);
+		
 		
 		PurchaseService purchaseService=new PurchaseServiceImpl();
-		purchaseService.addPurchase(purchaseVO);
-		request.setAttribute("purchaseVO", purchaseVO);
+		purchaseService.addPurchase(purchase);
+		request.setAttribute("purchase", purchase);
 		return "forward:/purchase/addPurchase.jsp";
 	}
 

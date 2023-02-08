@@ -18,9 +18,9 @@ public class AddPurchaseViewAction extends Action {
 		int prodNo= Integer.parseInt(request.getParameter("prodNo"));
 		
 		ProductService productService=new ProductServiceImpl();
-		Product productVO=productService.getProduct(prodNo);
+		Product product=productService.getProduct(prodNo);
 		
-		request.setAttribute("productVO", productVO);
+		request.setAttribute("product", product);
 		
 		return "forward:/purchase/addPurchaseView.jsp";
 	}
