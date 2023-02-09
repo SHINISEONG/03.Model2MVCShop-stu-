@@ -6,6 +6,8 @@ public class Search {
 	private int currentPage;
 	String searchCondition;
 	String searchKeyword;
+	int searchMinPrice;
+	int searchMaxPrice;
 	int pageSize;
 	int pageUnit;
 	
@@ -43,6 +45,22 @@ public class Search {
 	public String getSearchKeyword() {
 		return searchKeyword;
 	}
+	public int getSearchMinPrice() {
+		return searchMinPrice;
+	}
+
+	public void setSearchMinPrice(int searchMinPrice) {
+		this.searchMinPrice = searchMinPrice;
+	}
+
+	public int getSearchMaxPrice() {
+		return searchMaxPrice;
+	}
+
+	public void setSearchMaxPrice(int searchMaxPrice) {
+		this.searchMaxPrice = searchMaxPrice;
+	}
+
 	public void setSearchKeyword(String searchKeyword) {
 		this.searchKeyword = searchKeyword;
 	}
@@ -50,8 +68,11 @@ public class Search {
 	@Override
 	public String toString() {
 		return "Search [currentPage=" + currentPage + ", searchCondition=" + searchCondition + ", searchKeyword="
-				+ searchKeyword + ", pageSize=" + pageSize + ", pageUnit=" + pageUnit + "]";
+				+ searchKeyword + ", searchMinPrice=" + searchMinPrice + ", searchMaxPrice=" + searchMaxPrice
+				+ ", pageSize=" + pageSize + ", pageUnit=" + pageUnit + "]";
 	}
+
+	
 
 	
 	

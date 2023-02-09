@@ -70,16 +70,14 @@ public class ProductDAO {
 		
 		String sql = "SELECT prod_no, prod_name, price, reg_date FROM product ";
 			System.out.println("getPL 내부 search"+search);
-			if(search.getSearchCondition() != null && search.getSearchKeyword()!=null) {
+			if(search.getSearchCondition() != null && 
+					(search.getSearchKeyword()!=null || (search.getSearchMinPrice() + search.getSearchMaxPrice() != 0))) {
 				if (search.getSearchCondition().equals("0") && !search.getSearchKeyword().equals("")) {
-					sql += " WHERE PROD_NO='" + search.getSearchKeyword() // searchCon이 0이면 아이디검색
-							+ "'";
+					sql += " WHERE PROD_NO='" + search.getSearchKeyword() + "'";
 				} else if (search.getSearchCondition().equals("1") && !search.getSearchKeyword().equals("")) {
-					sql += " WHERE PROD_NAME like '%" + search.getSearchKeyword() // serchCon이 1이면 이름 검색
-							+ "%'";
-				} else if (search.getSearchCondition().equals("2") && !search.getSearchKeyword().equals("")) {
-					sql += " WHERE PRICE='" + search.getSearchKeyword() // serchCon이 2이면 가격 검색
-					+ "'";
+					sql += " WHERE PROD_NAME like '%" + search.getSearchKeyword() + "%'";
+				} else if (search.getSearchCondition().equals("2") && (search.getSearchMinPrice() + search.getSearchMaxPrice() != 0)) {
+					sql += " WHERE PRICE BETWEEN " + search.getSearchMinPrice() +" AND " + search.getSearchMaxPrice();
 				}
 			}
 		System.out.println("total Count 전 Query : " + sql);

@@ -26,6 +26,32 @@ public class ListProductAction extends Action {
 		search.setSearchCondition(request.getParameter("searchCondition"));
 		search.setSearchKeyword(request.getParameter("searchKeyword"));
 		
+		int searchMinPrice = 0;
+		int searchMaxPrice = 0;
+		
+		if (request.getParameter("searchMinPrice") != null) {
+			searchMinPrice = Integer.parseInt(request.getParameter("searchMinPrice"));
+		}
+		
+		if	(request.getParameter("searchMaxPrice") != null) {
+			searchMaxPrice = Integer.parseInt(request.getParameter("searchMaxPrice"));
+		}
+		
+		System.out.println("최소가 : "+searchMinPrice+"최대가 : "+searchMaxPrice);
+		
+		if (searchMaxPrice < searchMinPrice) {
+			int tmp=0;
+		
+			tmp = searchMaxPrice;
+			searchMaxPrice = searchMinPrice;
+			searchMinPrice = tmp;
+		}
+		
+		System.out.println(":: 스위칭 후 최소가 : "+searchMinPrice+"최대가 : "+searchMaxPrice);
+		
+		search.setSearchMinPrice(searchMinPrice);
+		search.setSearchMaxPrice(searchMaxPrice);
+		
 		int pageSize = Integer.parseInt(getServletContext().getInitParameter("pageSize"));  //servletcontext를 각 액션에 부여한 이유.
 		int pageUnit = Integer.parseInt(getServletContext().getInitParameter("pageUnit"));
 		search.setPageSize(pageSize);
