@@ -97,7 +97,7 @@ public class PurchaseDAO {
 		
 		Connection con = DBUtil.getConnection();
 
-		String sql = "SELECT tran_no, buyer_id, receiver_name, receiver_phone, NVL(tran_status_code,0) \"TRAN_STATUS_CODE\" FROM transaction WHERE buyer_id = ? ORDER BY tran_no";
+		String sql = "SELECT tran_no, buyer_id, receiver_name, receiver_phone, NVL(tran_status_code,0) \"TRAN_STATUS_CODE\" FROM transaction WHERE buyer_id = ? ORDER BY tran_no DESC";
 
 		int totalCount = getTotalCount(sql, userId);
 		
