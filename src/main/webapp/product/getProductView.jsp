@@ -48,7 +48,14 @@ function resetData(){
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
-
+<c:choose>
+	<c:when test = "${!(product.proTranCode eq '0')}">
+		<c:set var = "menu" value="search"/>
+	</c:when>
+	<c:otherwise>
+		<c:set var = "menu" value="${param.menu }"/>
+	</c:otherwise>
+</c:choose>
 <form name="detailForm" method="post">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
@@ -61,10 +68,10 @@ function resetData(){
 				<tr>
 					<td width="93%" class="ct_ttl01">
 					<c:choose>
-						<c:when test = "${param.menu eq 'manage'}">
+						<c:when test = "${menu eq 'manage'}">
 							상품수정
 						</c:when>
-						<c:when test = "${param.menu eq 'search'}">
+						<c:when test = "${menu eq 'search'}">
 							상품상세조회
 						</c:when>
 					</c:choose>
@@ -84,7 +91,7 @@ function resetData(){
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
-	<c:if test = "${param.menu eq 'search'}">
+	<c:if test = "${menu eq 'search'}">
 		<tr>
 			<td width="104" class="ct_write">
 				상품번호 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
@@ -112,12 +119,12 @@ function resetData(){
 				<tr>
 					<td width="105">
 						<c:choose>
-							<c:when test = "${param.menu eq 'manage'}">
+							<c:when test = "${menu eq 'manage'}">
 								<input type="text" name="prodName" value ="${product.prodName }" class="ct_input_g" 
 								       style="width: 100px; height: 19px" maxLength="20">
 							</c:when>
 							
-							<c:when test = "${param.menu eq 'search'}">
+							<c:when test = "${menu eq 'search'}">
 								${product.prodName }
 							</c:when>
 						</c:choose>
@@ -130,7 +137,7 @@ function resetData(){
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	
-	<c:if test = "${param.menu eq 'search'}">
+	<c:if test = "${menu eq 'search'}">
 		<tr>
 			<td width="104" class="ct_write">
 			상품이미지 <img	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
@@ -155,12 +162,12 @@ function resetData(){
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<c:choose>
-				<c:when test = "${param.menu eq 'manage'}">
+				<c:when test = "${menu eq 'manage'}">
 						<input type="text" name="prodDetail" value ="${product.prodDetail }" class="ct_input_g" 
 								style="width: 100px; height: 19px" maxLength="20">
 				</c:when>
 				
-				<c:when test = "${param.menu eq 'search'}">
+				<c:when test = "${menu eq 'search'}">
 					${product.prodDetail }
 				</c:when>
 			</c:choose>
@@ -172,19 +179,19 @@ function resetData(){
 	<tr>
 		<td width="104" class="ct_write">
 			제조일자 
-			<c:if test = "${param.menu eq 'manage'}">			
+			<c:if test = "${menu eq 'manage'}">			
 				<img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 			</c:if>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<c:choose>
-				<c:when test = "${param.menu eq 'manage'}">
+				<c:when test = "${menu eq 'manage'}">
 						<input type="text" name="manuDate" value ="${product.manuDate}" class="ct_input_g" 
 								style="width: 100px; height: 19px" maxLength="20">
 				</c:when>
 				
-				<c:when test = "${param.menu eq 'search'}">
+				<c:when test = "${menu eq 'search'}">
 					${product.manuDate}
 				</c:when>
 			</c:choose>
@@ -196,19 +203,19 @@ function resetData(){
 	<tr>
 		<td width="104" class="ct_write">
 			가격 
-			<c:if test = "${param.menu eq 'manage'}">	
+			<c:if test = "${menu eq 'manage'}">	
 				<img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 			</c:if>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<c:choose>
-				<c:when test = "${param.menu eq 'manage'}">
+				<c:when test = "${menu eq 'manage'}">
 						<input type="text" name="price" value ="${product.price}" class="ct_input_g" 
 								style="width: 100px; height: 19px" maxLength="20">
 				</c:when>
 			
-				<c:when test = "${param.menu eq 'manage'}">
+				<c:when test = "${menu eq 'manage'}">
 					${product.price}
 				</c:when>
 			</c:choose>
@@ -218,7 +225,7 @@ function resetData(){
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
-	<c:if test = "${param.menu eq 'manage'}">
+	<c:if test = "${menu eq 'manage'}">
 		<tr>
 			<td width="104" class="ct_write">상품이미지</td>
 			<td bgcolor="D6D6D6" width="1"></td>
@@ -233,7 +240,7 @@ function resetData(){
 			<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 		</tr>
 	</c:if>
-	<c:if test = "${param.menu eq 'search'}">
+	<c:if test = "${menu eq 'search'}">
 		<tr>
 			<td width="104" class="ct_write">등록일자</td>
 			<td bgcolor="D6D6D6" width="1"></td>
@@ -258,12 +265,12 @@ function resetData(){
 					<c:when test = "${!param.updateChecker}">
 						<td background="/images/ct_btnbg02.gif" class="ct_btn01"  style="padding-top: 3px;">
 					<c:choose>
-						<c:when test = "${param.menu eq 'manage'}">
+						<c:when test = "${menu eq 'manage'}">
 							<input type = "hidden" name = "prodNo" value = "${param.prodNo }"/>
 							<input type = "hidden" name = "menu" value = "search"/>
 							<a href="javascript:fncAddProduct();">수정</a>
 						</c:when>
-						<c:when test = "${param.menu eq 'search'}">
+						<c:when test = "${menu eq 'search' && !(user.role eq 'admin')}">
 							<a href="/addPurchaseView.do?prodNo=${product.prodNo }">구매</a>
 						</c:when>
 					</c:choose>
@@ -281,10 +288,10 @@ function resetData(){
 					
 						<a href="javascript:history.go(-1)">
 						<c:choose>
-							<c:when test = "${param.menu eq 'manage'}">
+							<c:when test = "${menu eq 'manage'}">
 								취소
 							</c:when>
-							<c:when test = "${param.menu eq 'search'}">
+							<c:when test = "${menu eq 'search'}">
 								이전
 							</c:when>
 						</c:choose>

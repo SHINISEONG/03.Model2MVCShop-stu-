@@ -20,7 +20,6 @@ public class AddProductAction extends Action {
 		Product product=new Product();
 		String prodManuDateSQL = request.getParameter("manuDate").replaceAll("-", "");
 		 
-		
 		product.setProdName(request.getParameter("prodName"));
 		product.setProdDetail(request.getParameter("prodDetail"));
 		product.setManuDate(prodManuDateSQL);

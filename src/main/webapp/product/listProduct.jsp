@@ -138,7 +138,6 @@
 	<tr class="ct_list_pop">
 		<td align="center">${i }</td>
 		<td></td>
-				
 			<td align="left">
 				<c:choose>
 					<c:when test = "${product.proTranCode eq '0'}">
@@ -146,7 +145,7 @@
 					</c:when>
 					<c:otherwise>
 						<c:choose>
-							<c:when test = "${user.userId eq 'admin'}">
+							<c:when test = "${user.role eq 'admin'}">
 								<a href="/getProduct.do?prodNo=${product.prodNo }&menu=${param.menu}">${product.prodName}</a>
 							</c:when>
 							<c:otherwise>
@@ -166,12 +165,11 @@
 		<c:choose>
 			<c:when test="${param.menu eq 'search' }">
 				<c:choose>
-					<c:when test ="${!user.role eq admin }">
+					<c:when test ="${! (user.role eq 'admin') }">
 						<c:choose>
 							<c:when test = "${product.proTranCode eq '0' }">
 							 	판매중
 					 		</c:when>
-					 		
 					 		<c:otherwise>
 								재고 없음
 							</c:otherwise>
