@@ -6,10 +6,13 @@ public class Search {
 	private int currentPage;
 	String searchCondition;
 	String searchKeyword;
+	String searchOrderType;
 	int searchMinPrice;
 	int searchMaxPrice;
+	
 	int pageSize;
 	int pageUnit;
+	
 	
 	public Search(){
 	}
@@ -65,13 +68,22 @@ public class Search {
 		this.searchKeyword = searchKeyword;
 	}
 
+	public String getSearchOrderType() {
+		return searchOrderType;
+	}
+
+	public void setSearchOrderType(String searchOrderType) {
+		this.searchOrderType = searchOrderType;
+	}
+
 	@Override
 	public String toString() {
 		return "Search [currentPage=" + currentPage + ", searchCondition=" + searchCondition + ", searchKeyword="
-				+ searchKeyword + ", searchMinPrice=" + searchMinPrice + ", searchMaxPrice=" + searchMaxPrice
-				+ ", pageSize=" + pageSize + ", pageUnit=" + pageUnit + "]";
+				+ searchKeyword + ", searchOrderType=" + searchOrderType + ", searchMinPrice=" + searchMinPrice
+				+ ", searchMaxPrice=" + searchMaxPrice + ", pageSize=" + pageSize + ", pageUnit=" + pageUnit + "]";
 	}
 
+	
 	
 
 	

@@ -20,18 +20,18 @@
 				◀ 이전
 		</c:if>
 		<c:if test="${ resultPage.currentPage > resultPage.pageUnit }">
-				<a href="javascript:${fncName }('${ resultPage.currentPage-1}'${menu })">◀ 이전</a>
+				<a href="javascript:${fncName }('${ resultPage.currentPage-1}','${search.searchOrderType}'${menu })">◀ 이전</a>
 		</c:if>
 		
 		<c:forEach var="i"  begin="${resultPage.beginUnitPage}" end="${resultPage.endUnitPage}" step="1">
-			<a href="javascript:${fncName }('${ i }'${menu });">${ i }</a>
+			<a href="javascript:${fncName }('${ i }','${search.searchOrderType}'${menu });">${ i }</a>
 		</c:forEach>
 		
 		<c:if test="${ resultPage.endUnitPage >= resultPage.maxPage }">
 				이후 ▶
 		</c:if>
 		<c:if test="${ resultPage.endUnitPage < resultPage.maxPage }">
-				<a href="javascript:${fncName }('${resultPage.endUnitPage+1}'${menu })">이후 ▶</a>
+				<a href="javascript:${fncName }('${resultPage.endUnitPage+1}','${search.searchOrderType}'${menu })">이후 ▶</a>
 		</c:if>
 	
 	

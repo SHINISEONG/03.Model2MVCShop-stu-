@@ -9,14 +9,17 @@
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
 <script type="text/javascript">
-	function fncGetPurchaseList(currentPage) {
+	function fncGetPurchaseList(currentPage, searchOrderType) {
 		document.getElementById("currentPage").value = currentPage;
+		document.getElementById("searchOrderType").value = searchOrderType;
 		document.detailForm.submit();
 	}
 </script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
+
+<c:set var = "pageType" value="purchase" scope="request"/>
 
 <div style="width: 98%; margin-left: 10px;">
 
@@ -37,6 +40,15 @@
 </table>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 10px;">
+	<tr>
+		<td align="right">
+			<input type="hidden" id="searchOrderType" name="searchOrderType" value="">
+		</td>
+		
+		<jsp:include page="../common/searchOrderTypeNavigator.jsp"/>
+				
+	</tr>
+
 	<tr>
 		<td colspan="11" >전체 ${resultPage.totalCount} 건수, 현재 ${resultPage.currentPage} 페이지</td>
 	</tr>
@@ -119,8 +131,7 @@
 	<tr>
 		<td align="center">
 			<input type="hidden" id="currentPage" name="currentPage" value=""/>
-		   
-			<c:set var = "pageType" value="purchase" scope="request"/>
+			
 			<jsp:include page="../common/pageNavigator.jsp"/>
 		</td>
 	</tr>

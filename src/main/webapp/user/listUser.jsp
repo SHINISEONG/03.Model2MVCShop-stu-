@@ -30,8 +30,9 @@
 <script type="text/javascript">
 <!--
 	// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
-	function fncGetUserList(currentPage) {
+	function fncGetUserList(currentPage, searchOrderType) {
 		document.getElementById("currentPage").value = currentPage;
+		document.getElementById("searchOrderType").value = searchOrderType;
 	   	document.detailForm.submit();		
 	}
 -->
@@ -40,6 +41,8 @@
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
+
+<c:set var = "pageType" value="user" scope="request"/>
 
 <div style="width:98%; margin-left:10px;">
 
@@ -94,6 +97,14 @@
 </table>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
+	<tr>
+		<td align="right">
+			<input type="hidden" id="searchOrderType" name="searchOrderType" value="">
+		</td>
+		
+		<jsp:include page="../common/searchOrderTypeNavigator.jsp"/>
+				
+	</tr>
 	<tr>
 		<%--
 		<td colspan="11" >
@@ -178,7 +189,7 @@
 			<a href="javascript:fncGetUserList('<%=resultPage.getEndUnitPage()+1%>')">이후 ▶</a>
 	<% } %>
 	 /////////////////////// EL / JSTL 적용으로 주석 처리 //////////////////////// --%>
-		<c:set var = "pageType" value="user" scope="request"/>
+		
 		<jsp:include page="../common/pageNavigator.jsp"/>	
 			
     	</td>

@@ -28,6 +28,7 @@ public class ListProductAction extends Action {
 		
 		int searchMinPrice = 0;
 		int searchMaxPrice = 0;
+		String searchOrderType = "orderByDateDESC";
 		
 		if (request.getParameter("searchMinPrice") != null) {
 			searchMinPrice = Integer.parseInt(request.getParameter("searchMinPrice"));
@@ -37,7 +38,14 @@ public class ListProductAction extends Action {
 			searchMaxPrice = Integer.parseInt(request.getParameter("searchMaxPrice"));
 		}
 		
-		System.out.println("최소가 : "+searchMinPrice+"최대가 : "+searchMaxPrice);
+		System.out.println("ListProductAction 내부 searchOrderType Param value : "+request.getParameter("searchOrderType"));
+	
+		if(request.getParameter("searchOrderType")!=null && !(request.getParameter("searchOrderType").equals(""))) {
+			searchOrderType = request.getParameter("searchOrderType");
+		}
+		
+		System.out.println("ListProductAction 내부 setting 된 searchOrderType : "+searchOrderType);
+		
 		
 		if (searchMaxPrice < searchMinPrice) {
 			int tmp=0;
@@ -47,10 +55,10 @@ public class ListProductAction extends Action {
 			searchMinPrice = tmp;
 		}
 		
-		System.out.println(":: 스위칭 후 최소가 : "+searchMinPrice+"최대가 : "+searchMaxPrice);
-		
+		search.setSearchOrderType(searchOrderType);
 		search.setSearchMinPrice(searchMinPrice);
 		search.setSearchMaxPrice(searchMaxPrice);
+		
 		
 		int pageSize = Integer.parseInt(getServletContext().getInitParameter("pageSize"));  //servletcontext를 각 액션에 부여한 이유.
 		int pageUnit = Integer.parseInt(getServletContext().getInitParameter("pageUnit"));

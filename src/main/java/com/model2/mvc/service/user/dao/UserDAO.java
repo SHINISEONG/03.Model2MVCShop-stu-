@@ -85,7 +85,7 @@ public class UserDAO {
 		Connection con = DBUtil.getConnection();
 		
 		// Original Query ±¸¼º
-		String sql = "SELECT user_id ,  user_name , email  FROM  users ";
+		String sql = "SELECT user_id ,  user_name , email, reg_date  FROM  users ";
 		
 		if (search.getSearchCondition() != null) {
 			if ( search.getSearchCondition().equals("0") &&  !search.getSearchKeyword().equals("") ) {
@@ -94,7 +94,15 @@ public class UserDAO {
 				sql += " WHERE user_name LIKE '%" + search.getSearchKeyword()+"%'";
 			}
 		}
-		sql += " ORDER BY user_id";
+		
+		if(search.getSearchOrderType().equals("orderByUserIdASC")) {
+			sql += " ORDER BY user_id ASC ";
+		} else if (search.getSearchOrderType().equals("orderByDateDESC")) {
+			sql += " ORDER BY reg_date DESC ";
+		} else if (search.getSearchOrderType().equals("orderByDateASC")) {
+			sql += " ORDER BY reg_date ASC ";
+		}
+		
 		
 		System.out.println("UserDAO::Original SQL :: " + sql);
 		

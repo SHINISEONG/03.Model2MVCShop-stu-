@@ -97,8 +97,14 @@ public class PurchaseDAO {
 		
 		Connection con = DBUtil.getConnection();
 
-		String sql = "SELECT tran_no, buyer_id, receiver_name, receiver_phone, NVL(tran_status_code,0) \"TRAN_STATUS_CODE\" FROM transaction WHERE buyer_id = ? ORDER BY tran_no DESC";
-
+		String sql = "SELECT tran_no, buyer_id, receiver_name, receiver_phone, NVL(tran_status_code,0) \"TRAN_STATUS_CODE\", order_date FROM transaction WHERE buyer_id = ? ";
+		
+		if(search.getSearchOrderType().equals("orderByDateDESC")) {
+			sql += " ORDER BY order_date DESC ";
+		} else if (search.getSearchOrderType().equals("orderByDateASC")) {
+			sql += " ORDER BY order_date ASC ";
+		}
+		
 		int totalCount = getTotalCount(sql, userId);
 		
 		System.out.println("구매목록검색 로우의 수:" + totalCount);
@@ -130,7 +136,8 @@ public class PurchaseDAO {
 				purchase.setReceiverName(rs.getString("RECEIVER_NAME"));
 				purchase.setReceiverPhone(rs.getString("RECEIVER_PHONE"));
 				purchase.setTranCode(rs.getString("TRAN_STATUS_CODE").trim());
-
+				purchase.setOrderDate(rs.getDate("order_date"));
+				
 				list.add(purchase);
 				
 			}

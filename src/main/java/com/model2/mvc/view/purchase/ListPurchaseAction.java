@@ -20,7 +20,7 @@ public class ListPurchaseAction extends Action {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Search search = new Search();
-
+		
 		int currentPage = 1;
 		if (request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
@@ -28,6 +28,13 @@ public class ListPurchaseAction extends Action {
 
 		search.setCurrentPage(currentPage);
 		
+		String searchOrderType = "orderByDateDESC";
+		
+		if(request.getParameter("searchOrderType")!=null && !(request.getParameter("searchOrderType").equals(""))) {
+			searchOrderType = request.getParameter("searchOrderType");
+		}
+		
+		search.setSearchOrderType(searchOrderType);
 		
 		int pageSize = Integer.parseInt(getServletContext().getInitParameter("pageSize"));  //servletcontext를 각 액션에 부여한 이유.
 		int pageUnit = Integer.parseInt(getServletContext().getInitParameter("pageUnit"));

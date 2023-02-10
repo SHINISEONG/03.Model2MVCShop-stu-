@@ -80,12 +80,21 @@ public class ProductDAO {
 					sql += " WHERE PRICE BETWEEN " + search.getSearchMinPrice() +" AND " + search.getSearchMaxPrice();
 				}
 			}
+		
 		System.out.println("total Count 전 Query : " + sql);
 		int totalCount = getTotalCount(sql);
 		
 		System.out.println("상품검색 로우의 수:" + totalCount);
 		
-		sql += "ORDER BY prod_no";
+		if(search.getSearchOrderType().equals("orderByDateDESC")) {
+			sql += " ORDER BY reg_date DESC ";
+		} else if (search.getSearchOrderType().equals("orderByDateASC")) {
+			sql += " ORDER BY reg_date ASC ";
+		} else if (search.getSearchOrderType().equals("orderByPriceDESC")) {
+			sql += " ORDER BY price DESC ";
+		} else if (search.getSearchOrderType().equals("orderByPriceASC")) {
+			sql += " ORDER BY price ASC ";
+		}	
 		
 		sql = makeCurrentPageSql(sql, search);
 		

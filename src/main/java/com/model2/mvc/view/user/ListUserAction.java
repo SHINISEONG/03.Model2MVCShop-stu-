@@ -34,6 +34,14 @@ public class ListUserAction extends Action {
 		int pageUnit  =  Integer.parseInt(getServletContext().getInitParameter("pageUnit"));
 		search.setPageSize(pageSize);
 		
+		String searchOrderType = "orderByUserIdASC";
+		
+		if(request.getParameter("searchOrderType")!=null && !(request.getParameter("searchOrderType").equals(""))) {
+			searchOrderType = request.getParameter("searchOrderType");
+		}
+		
+		search.setSearchOrderType(searchOrderType);
+		
 		// Business logic ผ๖วเ
 		UserService userService=new UserServiceImpl();
 		Map<String , Object> map=userService.getUserList(search);

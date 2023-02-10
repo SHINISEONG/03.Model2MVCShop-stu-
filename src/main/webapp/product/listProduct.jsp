@@ -14,9 +14,10 @@
 
 <script type="text/javascript">
 	// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
-	function fncGetProductList(currentPage, menu) {
+	function fncGetProductList(currentPage, searchOrderType, menu) {
 		document.getElementById("currentPage").value = currentPage;
 		document.getElementById("menu").value = menu;
+		document.getElementById("searchOrderType").value = searchOrderType;
 	   	document.detailForm.submit();		
 	}
 	
@@ -33,6 +34,7 @@
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
+<c:set var = "pageType" value="product" scope="request"/>
 
 <div style="width:98%; margin-left:10px;">
 
@@ -111,9 +113,19 @@
 	</tr>
 </table>
 
-
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
+	
 	<tr>
+		<td align="right">
+			<input type="hidden" id="searchOrderType" name="searchOrderType" value="">
+		</td>
+		
+		<jsp:include page="../common/searchOrderTypeNavigator.jsp"/>
+				
+	</tr>
+	
+	<tr>
+		
 		<td colspan="11" >전체  ${resultPage.totalCount} 건수, 현재 ${resultPage.currentPage} 페이지</td>
 	</tr>
 	<tr>
@@ -227,8 +239,7 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
 	<tr>
 		<td align="center">
-		<input type="hidden" id="currentPage" name="currentPage" value=""/>
-		<input type="hidden" id="menu" name="menu" value=""/>
+		
 			<%--
 			<% if( resultPage.getCurrentPage() > resultPage.getPageUnit() ){ %>
 					<a href="javascript:fncGetProductList('<%=resultPage.getCurrentPage()-1%>', '<%=menu %>')">◀ 이전</a>
@@ -242,10 +253,10 @@
 					<a href="javascript:fncGetProductList('<%=resultPage.getCurrentPage()+1%>', '<%=menu %>')">이후 ▶</a>
 			<% } %>
 			 --%>
-			 <c:set var = "pageType" value="product" scope="request"/>
-			 
-			<jsp:include page="../common/pageNavigator.jsp"/>
+			<input type="hidden" id="currentPage" name="currentPage" value=""/>
+			<input type="hidden" id="menu" name="menu" value=""/>
 			
+			<jsp:include page="../common/pageNavigator.jsp"/>
     	</td>
 	</tr>
 </table>
