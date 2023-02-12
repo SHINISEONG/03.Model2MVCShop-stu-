@@ -215,7 +215,7 @@ function resetData(){
 								style="width: 100px; height: 19px" maxLength="20">
 				</c:when>
 			
-				<c:when test = "${param.menu eq 'manage'}">
+				<c:when test = "${param.menu eq 'search'}">
 					${product.price}
 				</c:when>
 			</c:choose>

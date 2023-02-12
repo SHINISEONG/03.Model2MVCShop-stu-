@@ -34,24 +34,7 @@
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
-	<tr>
-		<td width="104" class="ct_write">
-			물품번호 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-		</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td width="105">
-					${purchase.purchaseProd.prodNo}</td>
-					<td></td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
+	
 	<tr>
 		<td width="104" class="ct_write">
 			물품명 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
@@ -119,6 +102,14 @@
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	<tr>
+		<td width="104" class="ct_write">구매수량</td>
+		<td bgcolor="D6D6D6" width="1"></td>
+		<td class="ct_write01">${purchase.quantity}</td>
+	</tr>
+	<tr>
+		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
+	</tr>
+	<tr>
 		<td width="104" class="ct_write">구매자이름</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">${purchase.receiverName}</td>
@@ -178,7 +169,7 @@
 		<td align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
 				<tr>
-					<c:if test="${!(purchase.tranCode eq '2' || purchase.tranCode eq '3') }">
+					<c:if test="${purchase.tranCode eq '1' }">
 					<td width="17" height="23">
 						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 					</td>

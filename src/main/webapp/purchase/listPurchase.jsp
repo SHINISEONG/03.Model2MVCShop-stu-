@@ -162,7 +162,7 @@
 		<c:if test = "${purchase.tranCode eq '1' && user.role eq 'admin' }">
 			<a href="/updateTranCode.do?tranNo=${purchase.tranNo}&tranCode=2&page=${resultPage.currentPage}">배송하기</a>
 		</c:if>
-		<c:if test = "${purchase.tranCode eq '2'}">
+		<c:if test = "${purchase.tranCode eq '2' && user.role eq 'user'}">
 			<a href="/updateTranCode.do?tranNo=${purchase.tranNo}&tranCode=3&page=${resultPage.currentPage}">물건도착</a>
 		</c:if>
 		</td>

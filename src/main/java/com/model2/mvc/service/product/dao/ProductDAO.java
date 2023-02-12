@@ -153,7 +153,7 @@ public class ProductDAO {
 		return map;
 	}// end of getProductList
 
-	public void updateProduct(Product productVO) throws Exception {
+	public void updateProduct(Product product) throws Exception {
 
 		Connection con = DBUtil.getConnection();
 
@@ -161,18 +161,18 @@ public class ProductDAO {
 					+ "WHERE prod_no=?";
 
 		PreparedStatement stmt = con.prepareStatement(sql);
-		stmt.setString(1, productVO.getProdName());
-		stmt.setString(2, productVO.getProdDetail());
-		stmt.setString(3, productVO.getManuDate());
-		stmt.setInt(4, productVO.getPrice());
-		stmt.setString(5, productVO.getFileName());
-		stmt.setInt(6, productVO.getProdNo());
+		stmt.setString(1, product.getProdName());
+		stmt.setString(2, product.getProdDetail());
+		stmt.setString(3, product.getManuDate());
+		stmt.setInt(4, product.getPrice());
+		stmt.setString(5, product.getFileName());
+		stmt.setInt(6, product.getProdNo());
 		stmt.executeUpdate();
 		
 		sql = "UPDATE stock SET stock = ? WHERE prod_no = ?";
 		stmt = con.prepareStatement(sql);
-		stmt.setInt(1, productVO.getStock());
-		stmt.setInt(2, productVO.getProdNo());
+		stmt.setInt(1, product.getStock());
+		stmt.setInt(2, product.getProdNo());
 		stmt.executeUpdate();
 		
 		stmt.close();

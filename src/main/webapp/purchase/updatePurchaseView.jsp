@@ -1,9 +1,6 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
 
-
-Purchase purchaseVO = (Purchase)request.getAttribute("purchase");
-
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -61,6 +58,24 @@ Purchase purchaseVO = (Purchase)request.getAttribute("purchase");
 				<option value="1" ${purchase.paymentOption eq '1' ? " selected " : "" }>현금구매</option>
 				<option value="2" ${purchase.paymentOption eq '2' ? " selected " : "" }>신용구매</option>
 			</select>
+		</td>
+	</tr>
+	<tr>
+		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
+	</tr>
+	<tr>
+		<td width="104" class="ct_write">구매수량</td>
+		<td bgcolor="D6D6D6" width="1"></td>
+		<td class="ct_write01">
+			<select name="quantity" class="ct_input_g" style="width:80px">
+				<c:forEach var="i" begin = "1" end = "${purchase.quantity + product.stock}" >
+					<option value="${i }" ${purchase.quantity == i ? " selected " : "" }>${i }</option>
+				</c:forEach>
+			</select>
+		</td>
+		<td>
+			<input type="hidden" name="originalPurchaseQuantity" value="${purchase.quantity }"/>
+			<input type="hidden" name="prodNo" value="${product.prodNo }"/>
 		</td>
 	</tr>
 	<tr>

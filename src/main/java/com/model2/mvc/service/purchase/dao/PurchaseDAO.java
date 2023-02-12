@@ -55,7 +55,7 @@ public class PurchaseDAO {
 		PreparedStatement stmt = con.prepareStatement("SELECT "
 				+ "									   tran_no, prod_no, buyer_id, payment_option, receiver_name, "
 				+ "									   receiver_phone, dlvy_addr, dlvy_request, NVL(tran_status_code,0) \"tran_status_code\", "
-				+ "									   order_date, dlvy_date "
+				+ "									   order_date, dlvy_date, quantity"
 				+ "									   FROM transaction "
 				+ "									   WHERE tran_no = ?");
 		
@@ -86,7 +86,7 @@ public class PurchaseDAO {
 			purchase.setTranCode(rs.getString("TRAN_STATUS_CODE").trim());
 			purchase.setOrderDate(rs.getDate("ORDER_DATE"));
 			purchase.setDivyDate(rs.getString("DLVY_DATE"));
-
+			purchase.setQuantity(rs.getInt("quantity"));
 		}
 		con.close();
 		return purchase;
@@ -165,23 +165,23 @@ public class PurchaseDAO {
 	}//end of getSaleList()
 	
 
-	public void updatePurchase(Purchase purchaseVO) throws Exception {
+	public void updatePurchase(Purchase purchase) throws Exception {
 
 		Connection con = DBUtil.getConnection();
 
-		String sql = "UPDATE transaction SET payment_option=?, receiver_name=?, receiver_phone=?, dlvy_addr=?, dlvy_request=?, dlvy_date=? "
+		String sql = "UPDATE transaction SET payment_option=?, receiver_name=?, receiver_phone=?, dlvy_addr=?, dlvy_request=?, dlvy_date=?, quantity=? "
 				+ "	  WHERE tran_no=?";
 		
 		
 		PreparedStatement stmt = con.prepareStatement(sql);
-		stmt.setString(1, purchaseVO.getPaymentOption());
-		stmt.setString(2, purchaseVO.getReceiverName());
-		stmt.setString(3, purchaseVO.getReceiverPhone());
-		stmt.setString(4, purchaseVO.getDivyAddr());
-		stmt.setString(5, purchaseVO.getDivyRequest());
-		stmt.setString(6, purchaseVO.getDivyDate());
-
-		stmt.setInt(7, purchaseVO.getTranNo());
+		stmt.setString(1, purchase.getPaymentOption());
+		stmt.setString(2, purchase.getReceiverName());
+		stmt.setString(3, purchase.getReceiverPhone());
+		stmt.setString(4, purchase.getDivyAddr());
+		stmt.setString(5, purchase.getDivyRequest());
+		stmt.setString(6, purchase.getDivyDate());
+		stmt.setInt(7, purchase.getQuantity());
+		stmt.setInt(8, purchase.getTranNo());
 
 		stmt.executeUpdate();
 

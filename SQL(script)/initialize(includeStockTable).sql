@@ -158,3 +158,10 @@ insert into stock values (10007, 3);
 
 
 commit;
+
+SELECT * FROM users;
+SELECT * FROM product;
+SELECT * FROM transaction;
+SELECT * FROM stock;
+
+
