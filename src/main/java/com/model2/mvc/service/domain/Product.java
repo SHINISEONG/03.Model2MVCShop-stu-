@@ -15,26 +15,12 @@ public class Product {
 	private int stock;
 	
 	//TODO 재고 구현후 뷰 파트까지 리팩토링 끝나면 아래 필드 지우기
-	private String proTranCode;
-	private int proTranNo;
+
 	
 	public Product(){
 	}
 	
-	public int getProTranNo() {
-		return proTranNo;
-	}
-
-	public void setProTranNo(int proTranNo) {
-		this.proTranNo = proTranNo;
-	}
 	
-	public String getProTranCode() {
-		return proTranCode;
-	}
-	public void setProTranCode(String proTranCode) {
-		this.proTranCode = proTranCode;
-	}
 	public String getFileName() {
 		return fileName;
 	}
@@ -86,13 +72,15 @@ public class Product {
 		this.stock = stock;
 	}
 
+
 	@Override
 	public String toString() {
 		return "Product [fileName=" + fileName + ", manuDate=" + manuDate + ", price=" + price + ", prodDetail="
 				+ prodDetail + ", prodName=" + prodName + ", prodNo=" + prodNo + ", regDate=" + regDate + ", stock="
-				+ stock + ", proTranCode=" + proTranCode + ", proTranNo=" + proTranNo + "]";
+				+ stock + "]";
 	}
 
+	
 	
 	
 	

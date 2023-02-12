@@ -48,14 +48,7 @@ function resetData(){
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
-<c:choose>
-	<c:when test = "${!(product.proTranCode eq '0')}">
-		<c:set var = "menu" value="search"/>
-	</c:when>
-	<c:otherwise>
-		<c:set var = "menu" value="${param.menu }"/>
-	</c:otherwise>
-</c:choose>
+
 <form name="detailForm" method="post">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">

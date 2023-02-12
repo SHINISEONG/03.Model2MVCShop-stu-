@@ -19,7 +19,7 @@ public class UpdateTranCodeByProdAction extends Action {
 	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+		/*
 		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
 		String tranCode = request.getParameter("tranCode");
 		System.out.println("trantran들어오니?" + tranCode);
@@ -42,6 +42,8 @@ public class UpdateTranCodeByProdAction extends Action {
 		return "forward:/listProduct.do?menu=manage&searchCondition="+searchCondition
 				+"&searchKeyword="+searchKeyword
 				+"&currentPage="+currentPage;
+	 */
+		return null;
 	}
 
 }

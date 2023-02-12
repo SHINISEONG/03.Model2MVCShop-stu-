@@ -43,11 +43,10 @@ public class ProductDAO {
 
 	public Product findProduct(int prodNo) throws Exception {
 		Connection con = DBUtil.getConnection();
-		PreparedStatement stmt = con.prepareStatement("SELECT p.*, NVL(s.stock,0) stock, NVL(t.tran_status_code,0) tran_code, NVL(t.tran_no,0) tran_no "
-				+ 									" FROM product p, transaction t, stock s "
-				+ 									" WHERE p.prod_no = t.prod_no(+) "
-				+									"  AND p.prod_no = s.prod_no(+) "
-				+ 									"  AND p.prod_no = ? ");
+		PreparedStatement stmt = con.prepareStatement("SELECT p.*, NVL(s.stock,0) stock "
+				+ 									" FROM product p, stock s "
+				+ 									" WHERE p.prod_no = s.prod_no(+) "
+				+ 									" AND p.prod_no = ? ");
 		
 		stmt.setInt(1, prodNo);
 
@@ -65,8 +64,6 @@ public class ProductDAO {
 			productVO.setManuDate(rs.getString("MANUFACTURE_DAY"));
 			productVO.setPrice(rs.getInt("PRICE"));
 			productVO.setRegDate(rs.getDate("REG_DATE"));
-			productVO.setProTranCode(rs.getString("tran_code").trim());
-			productVO.setProTranNo(rs.getInt("TRAN_NO"));
 			productVO.setStock(rs.getInt("STOCK"));
 		}
 		
@@ -81,10 +78,9 @@ public class ProductDAO {
 
 		
 		
-		String sql = "SELECT p.*, NVL(s.stock,0) stock, NVL(t.tran_status_code,0) tran_code, NVL(t.tran_no,0) tran_no "
-				+ "   FROM product p, transaction t, stock s "
-				+ "   WHERE p.prod_no = t.prod_no(+) "
-				+ "     AND p.prod_no = s.prod_no(+) ";
+		String sql = "SELECT p.*, NVL(s.stock,0) stock "
+				+ "   FROM product p, stock s "
+				+ "   WHERE p.prod_no = s.prod_no(+) ";
 			System.out.println("getPL ³»ºÎ search"+search);
 			if(search.getSearchCondition() != null && 
 					(search.getSearchKeyword()!=null || (search.getSearchMinPrice() + search.getSearchMaxPrice() != 0))) {
@@ -136,8 +132,6 @@ public class ProductDAO {
 				product.setProdName(rs.getString("prod_name"));
 				product.setPrice(rs.getInt("price"));
 				product.setRegDate(rs.getDate("reg_date"));
-				product.setProTranCode(rs.getString("tran_code").trim());
-				product.setProTranNo(rs.getInt("tran_no"));
 				product.setStock(rs.getInt("stock"));
 				list.add(product);
 			}
