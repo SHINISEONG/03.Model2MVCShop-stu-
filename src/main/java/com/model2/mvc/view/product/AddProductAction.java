@@ -24,6 +24,7 @@ public class AddProductAction extends Action {
 		product.setProdDetail(request.getParameter("prodDetail"));
 		product.setManuDate(prodManuDateSQL);
 		product.setPrice(Integer.parseInt(request.getParameter("price")));
+		product.setStock(Integer.parseInt(request.getParameter("stock")));
 		product.setFileName(request.getParameter("fileName"));
 		
 		
