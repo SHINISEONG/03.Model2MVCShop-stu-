@@ -32,14 +32,22 @@ public class ProductDAO {
 		stmt.setInt(4, productVO.getPrice());
 		stmt.setString(5, productVO.getFileName());
 		stmt.executeUpdate();
-
+		
+		sql = "INSERT INTO stock VALUES(seq_product_prod_no.CURRVAL, ?)";
+		stmt = con.prepareStatement(sql);
+		stmt.setInt(1, productVO.getStock());
+		stmt.executeUpdate();
+		
 		con.close();
 	}// end of insertProduct()
 
 	public Product findProduct(int prodNo) throws Exception {
 		Connection con = DBUtil.getConnection();
-		PreparedStatement stmt = con.prepareStatement("	SELECT p.*, NVL(t.tran_status_code,0) tran_code, NVL(t.tran_no,0) tran_no FROM product p, transaction t "
-				+ "WHERE p.prod_no = t.prod_no(+) AND p.prod_no = ?");
+		PreparedStatement stmt = con.prepareStatement("SELECT p.*, NVL(s.stock,0) stock, NVL(t.tran_status_code,0) tran_code, NVL(t.tran_no,0) tran_no "
+				+ 									" FROM product p, transaction t, stock s "
+				+ 									" WHERE p.prod_no = t.prod_no(+) "
+				+									"  AND p.prod_no = s.prod_no(+) "
+				+ 									"  AND p.prod_no = ? ");
 		
 		stmt.setInt(1, prodNo);
 
@@ -59,8 +67,13 @@ public class ProductDAO {
 			productVO.setRegDate(rs.getDate("REG_DATE"));
 			productVO.setProTranCode(rs.getString("tran_code").trim());
 			productVO.setProTranNo(rs.getInt("TRAN_NO"));
+			productVO.setStock(rs.getInt("STOCK"));
 		}
+		
+		rs.close();
+		stmt.close();
 		con.close();
+		
 		return productVO;
 	}// end of findProduct
 
@@ -68,16 +81,19 @@ public class ProductDAO {
 
 		
 		
-		String sql = "SELECT prod_no, prod_name, price, reg_date FROM product ";
+		String sql = "SELECT p.*, NVL(s.stock,0) stock, NVL(t.tran_status_code,0) tran_code, NVL(t.tran_no,0) tran_no "
+				+ "   FROM product p, transaction t, stock s "
+				+ "   WHERE p.prod_no = t.prod_no(+) "
+				+ "     AND p.prod_no = s.prod_no(+) ";
 			System.out.println("getPL 내부 search"+search);
 			if(search.getSearchCondition() != null && 
 					(search.getSearchKeyword()!=null || (search.getSearchMinPrice() + search.getSearchMaxPrice() != 0))) {
 				if (search.getSearchCondition().equals("0") && !search.getSearchKeyword().equals("")) {
-					sql += " WHERE PROD_NO='" + search.getSearchKeyword() + "'";
+					sql += " AND p.prod_no='" + search.getSearchKeyword() + "'";
 				} else if (search.getSearchCondition().equals("1") && !search.getSearchKeyword().equals("")) {
-					sql += " WHERE PROD_NAME like '%" + search.getSearchKeyword() + "%'";
+					sql += " AND p.prod_name like '%" + search.getSearchKeyword() + "%'";
 				} else if (search.getSearchCondition().equals("2") && (search.getSearchMinPrice() + search.getSearchMaxPrice() != 0)) {
-					sql += " WHERE PRICE BETWEEN " + search.getSearchMinPrice() +" AND " + search.getSearchMaxPrice();
+					sql += " AND p.price BETWEEN " + search.getSearchMinPrice() +" AND " + search.getSearchMaxPrice();
 				}
 			}
 		
@@ -87,13 +103,13 @@ public class ProductDAO {
 		System.out.println("상품검색 로우의 수:" + totalCount);
 		
 		if(search.getSearchOrderType().equals("orderByDateDESC")) {
-			sql += " ORDER BY reg_date DESC ";
+			sql += " ORDER BY p.reg_date DESC ";
 		} else if (search.getSearchOrderType().equals("orderByDateASC")) {
-			sql += " ORDER BY reg_date ASC ";
+			sql += " ORDER BY p.reg_date ASC ";
 		} else if (search.getSearchOrderType().equals("orderByPriceDESC")) {
-			sql += " ORDER BY price DESC ";
+			sql += " ORDER BY p.price DESC ";
 		} else if (search.getSearchOrderType().equals("orderByPriceASC")) {
-			sql += " ORDER BY price ASC ";
+			sql += " ORDER BY p.price ASC ";
 		}	
 		
 		sql = makeCurrentPageSql(sql, search);
@@ -116,12 +132,13 @@ public class ProductDAO {
 			while(rs.next()) {
 				Product product = new Product();
 				
-				product.setProdNo(rs.getInt("PROD_NO"));
-				product.setProdName(rs.getString("PROD_NAME"));
-				product.setPrice(rs.getInt("PRICE"));
-				product.setRegDate(rs.getDate("REG_DATE"));
+				product.setProdNo(rs.getInt("prod_no"));
+				product.setProdName(rs.getString("prod_name"));
+				product.setPrice(rs.getInt("price"));
+				product.setRegDate(rs.getDate("reg_date"));
 				product.setProTranCode(rs.getString("tran_code").trim());
 				product.setProTranNo(rs.getInt("tran_no"));
+				product.setStock(rs.getInt("stock"));
 				list.add(product);
 			}
 		}
@@ -152,6 +169,12 @@ public class ProductDAO {
 		stmt.setInt(6, productVO.getProdNo());
 		stmt.executeUpdate();
 		
+		sql = "UPDATE stock SET stock = ? WHERE prod_no = ?";
+		stmt = con.prepareStatement(sql);
+		stmt.setInt(1, productVO.getStock());
+		stmt.setInt(2, productVO.getProdNo());
+		stmt.executeUpdate();
+		
 		stmt.close();
 		con.close();
 	}// end of updateProduct
@@ -178,10 +201,12 @@ public class ProductDAO {
 	}
 	
 	private String makeCurrentPageSql(String sql, Search search) {
-		sql = "SELECT iv2.*, NVL(t.tran_no,0) \"tran_no\" , NVL(t.tran_status_code,0) \"tran_code\" FROM "
-				+ " (SELECT ROWNUM num, iv.* FROM ("+sql+") iv WHERE ROWNUM <= "+(search.getCurrentPage()*search.getPageSize())+") iv2, transaction t "
-				+ " WHERE iv2.prod_no = t.prod_no(+) "
-				+ " AND num BETWEEN " +((search.getCurrentPage()-1)*search.getPageSize()+1)+" AND "+ (search.getCurrentPage()*search.getPageSize()) +" ORDER BY num" ;
+		sql = "SELECT iv2.* "
+		   + " FROM (SELECT ROWNUM num, iv.* "
+		   + "       FROM (" + sql + ") iv "
+		   + "       WHERE ROWNUM <= " +(search.getCurrentPage()*search.getPageSize()) + " ) iv2 "
+		   + " WHERE num >= " + ((search.getCurrentPage()-1)*search.getPageSize()+1)
+		   + " ORDER BY num ";
 		
 		System.out.println("UserDAO :: make SQL :: "+ sql);
 		

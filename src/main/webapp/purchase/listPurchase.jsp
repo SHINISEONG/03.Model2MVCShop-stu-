@@ -38,6 +38,52 @@
 		<td width="12" height="37"><img src="/images/ct_ttl_img03.gif"	width="12" height="37"></td>
 	</tr>
 </table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
+	<tr>
+		
+		<td align="right">
+			<select name="searchCondition" class="ct_input_g" style="width:80px" onChange = "javaScript:fncGetProductList('${resultPage.currentPage }','${param.menu }')">
+					
+						<option value="0" ${ search.searchCondition == 0 ?" selected":""}>주문번호</option>
+						<c:if test = "${user.role eq 'admin'}">
+							<option value="1" ${ search.searchCondition == 1 ?" selected":""}>유저ID</option>
+						</c:if>
+						<option value="2" ${ search.searchCondition == 2 ?" selected":""}>구매자명</option>
+						<option value="3" ${ search.searchCondition == 3 ?" selected":""}>주문날짜</option>
+					
+			</select>
+			<c:choose>
+				<c:when test="${search.searchCondition == 3}">
+					&nbsp;
+					최소가<input type="text" name="searchMinPrice" value="${search.searchMinPrice }" class="ct_input_g" style="width:100px; height:19px" />
+					&nbsp;
+					최대가<input type="text" name="searchMaxPrice" value="${search.searchMaxPrice }" class="ct_input_g" style="width:100px; height:19px" />
+				</c:when>
+				
+				<c:otherwise>
+					<input type="text" name="searchKeyword" value="${search.searchKeyword }" class="ct_input_g" style="width:200px; height:19px" />
+				</c:otherwise>
+			</c:choose>
+		</td>
+			
+			
+		<td align="right" width="70">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td width="17" height="23">
+						<img src="/images/ct_btnbg01.gif" width="17" height="23">
+					</td>
+					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top:3px;">
+						<a href="javascript:fncGetProductList('1', '${param.menu }');">검색</a>
+					</td>
+					<td width="14" height="23">
+						<img src="/images/ct_btnbg03.gif" width="14" height="23">
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 10px;">
 	<tr>
@@ -57,7 +103,7 @@
 		<td class="ct_line02"></td>
 		<td class="ct_list_b" width="150">회원ID</td>
 		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="150">회원명</td>
+		<td class="ct_list_b" width="150">구매자명</td>
 		<td class="ct_line02"></td>
 		<td class="ct_list_b">전화번호</td>
 		<td class="ct_line02"></td>
@@ -113,7 +159,9 @@
 		
 		<td></td> 
    		<td align="left">
-		
+		<c:if test = "${purchase.tranCode eq '1' && user.role eq 'admin' }">
+			<a href="/updateTranCode.do?tranNo=${purchase.tranNo}&tranCode=2&page=${resultPage.currentPage}">배송하기</a>
+		</c:if>
 		<c:if test = "${purchase.tranCode eq '2'}">
 			<a href="/updateTranCode.do?tranNo=${purchase.tranNo}&tranCode=3&page=${resultPage.currentPage}">물건도착</a>
 		</c:if>

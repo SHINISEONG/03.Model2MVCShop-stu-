@@ -32,18 +32,19 @@ public class PurchaseDAO {
 		Connection con = DBUtil.getConnection();
 
 		String sql = "INSERT INTO transaction VALUES(seq_transaction_tran_no.NEXTVAL, "
-				+ "?, ?, ?, ?, ?, ?, ?, ? , sysdate,?)";
+				+ "?, ?, ?, ?, ?, ?, ?, ?, ? , sysdate,?)";
 
 		PreparedStatement stmt = con.prepareStatement(sql);
 		stmt.setInt(1, purchaseVO.getPurchaseProd().getProdNo());
 		stmt.setString(2, purchaseVO.getBuyer().getUserId());
 		stmt.setString(3, purchaseVO.getPaymentOption());
-		stmt.setString(4, purchaseVO.getReceiverName());
-		stmt.setString(5, purchaseVO.getReceiverPhone());
-		stmt.setString(6, purchaseVO.getDivyAddr());
-		stmt.setString(7, purchaseVO.getDivyRequest());
-		stmt.setString(8, purchaseVO.getTranCode());
-		stmt.setString(9, purchaseVO.getDivyDate());
+		stmt.setInt(4, purchaseVO.getQuantity());
+		stmt.setString(5, purchaseVO.getReceiverName());
+		stmt.setString(6, purchaseVO.getReceiverPhone());
+		stmt.setString(7, purchaseVO.getDivyAddr());
+		stmt.setString(8, purchaseVO.getDivyRequest());
+		stmt.setString(9, purchaseVO.getTranCode());
+		stmt.setString(10, purchaseVO.getDivyDate());
 		stmt.executeUpdate();
 
 		con.close();
@@ -77,7 +78,7 @@ public class PurchaseDAO {
 			purchase.setTranNo(rs.getInt("TRAN_NO"));
 			purchase.setPurchaseProd(product);
 			purchase.setBuyer(user);
-			purchase.setPaymentOption(rs.getString("PAYMENT_OPTION"));
+			purchase.setPaymentOption(rs.getString("PAYMENT_OPTION").trim());
 			purchase.setReceiverName(rs.getString("RECEIVER_NAME"));
 			purchase.setReceiverPhone(rs.getString("RECEIVER_PHONE"));
 			purchase.setDivyAddr(rs.getString("DLVY_ADDR"));
@@ -97,7 +98,11 @@ public class PurchaseDAO {
 		
 		Connection con = DBUtil.getConnection();
 
-		String sql = "SELECT tran_no, buyer_id, receiver_name, receiver_phone, NVL(tran_status_code,0) \"TRAN_STATUS_CODE\", order_date FROM transaction WHERE buyer_id = ? ";
+		String sql = "SELECT tran_no, buyer_id, receiver_name, receiver_phone, NVL(tran_status_code,0) \"TRAN_STATUS_CODE\", order_date FROM transaction ";
+		
+		if(!(userId.equals("admin"))) {
+			sql += " WHERE buyer_id = ? ";
+		}
 		
 		if(search.getSearchOrderType().equals("orderByDateDESC")) {
 			sql += " ORDER BY order_date DESC ";
@@ -111,10 +116,13 @@ public class PurchaseDAO {
 
 		map.put("totalCount", new Integer(totalCount)); // 맵 키 count에 총 검색 결과 수 할당.
 		
-		sql = makeCurrentPageSql(sql, search, userId);
+		sql = makeCurrentPageSql(sql, search);
 		
 		PreparedStatement stmt = con.prepareStatement(sql);
-		stmt.setString(1, userId);
+		
+		if(!(userId.equals("admin"))) {
+			stmt.setString(1, userId);
+		}
 		
 		ResultSet rs = stmt.executeQuery();
 		
@@ -203,7 +211,11 @@ public class PurchaseDAO {
 		
 		Connection con = DBUtil.getConnection();
 		PreparedStatement stmt = con.prepareStatement(sql);
-		stmt.setString(1, userId);
+	
+		if(!(userId.equals("admin"))) {
+			stmt.setString(1, userId);
+		}
+		
 		ResultSet rs = stmt.executeQuery();
 		
 		int totalCount = 0;
@@ -218,7 +230,7 @@ public class PurchaseDAO {
 		return totalCount;
 	}//end of getTotalCount()
 	
-	private String makeCurrentPageSql(String sql , Search search , String userId){
+	private String makeCurrentPageSql(String sql , Search search ){
 		sql = 	" SELECT * FROM "
 				+ " (SELECT ROWNUM num, iv.* FROM( " + sql + ")iv WHERE ROWNUM <= "+search.getCurrentPage()*search.getPageSize()+") "
 						+ " WHERE num >=  " + ((search.getCurrentPage()-1)*search.getPageSize()+1);

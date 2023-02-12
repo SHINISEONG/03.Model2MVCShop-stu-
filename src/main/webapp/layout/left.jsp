@@ -1,16 +1,7 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
 
-<%@ page import="com.model2.mvc.service.domain.*" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-User vo=(User)session.getAttribute("user");
-
-	String role="";
-
-	if(vo != null) {
-		role=vo.getRole();
-	}
-%>
 
 <html>
 <head>
@@ -34,28 +25,23 @@ function history(){
 <td valign="top"> 
 	<table  border="0" cellspacing="0" cellpadding="0" width="159" >	
 		<tr>
-		<%
-			if(vo != null){
-		%>
+		<c:if test ="${!(empty user) }">
 		<tr>
 		<td class="Depth03">
-			<a href="/getUser.do?userId=<%=vo.getUserId() %>" target="rightFrame">개인정보조회</a>
+			<a href="/getUser.do?userId=${user.userId}" target="rightFrame">개인정보조회</a>
 		</td>
 		</tr>
-		<%
-			}
-		%>
-		<%
-			if(role.equals("admin")){
-		%>
+		
+		</c:if>
+		<c:if test ="${user.role eq 'admin' }">
+		
 		<tr>
 		<td class="Depth03" >
 			<a href="/listUser.do" target="rightFrame">회원정보조회</a>
 		</td>
 		</tr>
-		<%
-			}
-		%>
+		
+		</c:if>
 		<tr>
 			<td class="DepthEnd">&nbsp;</td>
 		</tr>
@@ -63,9 +49,7 @@ function history(){
 </td>
 </tr>
 
-	<%
-		if(role.equals("admin")){
-	%>
+<c:if test ="${user.role eq 'admin' }">
 <!--menu 02 line-->
 <tr>
 <td valign="top"> 
@@ -85,9 +69,7 @@ function history(){
 	</table>
 </td>
 </tr>
-	<%
-				}
-	%>
+</c:if>
 
 <!--menu 03 line-->
 <tr>
@@ -98,19 +80,16 @@ function history(){
 				<a href="/listProduct.do?menu=search" target="rightFrame">상 품 검 색</a>
 			</td>
 		</tr>
-		<%
-			if(vo != null){
-				if(role.equals("user")){
-		%>
-		<tr>
-			<td class="Depth03">
-				<a href="/listPurchase.do" target="rightFrame">구매이력조회</a>
-			</td>
-		</tr>
-		<%
-				}
-			}
-		%>
+		
+		<c:if test ="${!(empty user)}">
+			
+			<tr>
+				<td class="Depth03">
+					<a href="/listPurchase.do" target="rightFrame">${user.role eq 'admin'?'주 문 관 리':'구매이력조회' }</a>
+				</td>
+			</tr>
+			
+		</c:if>
 		<tr>
 		<td class="DepthEnd">&nbsp;</td>
 		</tr>

@@ -103,11 +103,12 @@
 		<td width="104" class="ct_write">구매방법</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
+			
 			<c:choose>
-				<c:when test="${purchase.paymentOption eq '1' }">
+				<c:when test="${purchase.paymentOption == '1' }">
 					현금구매
 				</c:when>
-				<c:when test="${purchase.paymentOption eq '2' }">
+				<c:when test="${purchase.paymentOption == '2' }">
 					신용구매
 				</c:when>
 			</c:choose>

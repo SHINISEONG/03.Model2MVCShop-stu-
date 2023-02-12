@@ -137,7 +137,7 @@
 		<td class="ct_line02"></td>
 		<td class="ct_list_b">등록일</td>	
 		<td class="ct_line02"></td>
-		<td class="ct_list_b">현재상태</td>	
+		<td class="ct_list_b">재고상태</td>	
 	</tr>
 	<tr>
 		<td colspan="11" bgcolor="808285" height="1"></td>
@@ -152,7 +152,7 @@
 		<td></td>
 			<td align="left">
 				<c:choose>
-					<c:when test = "${product.proTranCode eq '0'}">
+					<c:when test = "${product.stock > 0}">
 						<a href="/getProduct.do?prodNo=${product.prodNo}&menu=${param.menu}"> ${product.prodName}</a>
 					</c:when>
 					<c:otherwise>
@@ -179,7 +179,7 @@
 				<c:choose>
 					<c:when test ="${! (user.role eq 'admin') }">
 						<c:choose>
-							<c:when test = "${product.proTranCode eq '0' }">
+							<c:when test = "${product.stock > 0 }">
 							 	판매중
 					 		</c:when>
 					 		<c:otherwise>
@@ -188,42 +188,12 @@
 						</c:choose>
 					</c:when>
 					<c:otherwise>
-						<c:choose>
-							<c:when test = "${product.proTranCode eq '0' }">
-								판매중
-							</c:when>
-							<c:when test = "${product.proTranCode eq '1' }">
-								구매완료
-							</c:when>
-							<c:when test = "${product.proTranCode eq '2' }">
-								배송중
-							</c:when>
-							<c:when test = "${product.proTranCode eq '3' }">
-								배송완료
-							</c:when>
-						</c:choose>
+						${product.stock }
 					</c:otherwise>
 				</c:choose>
 			</c:when>
 			<c:when test="${param.menu eq 'manage' }">
-				<c:choose>
-					<c:when test = "${product.proTranCode eq '0' }">
-						판매중
-					</c:when>
-					<c:when test = "${product.proTranCode eq '1' }">
-						구매완료
-						&nbsp;
-						<input type = "hidden" id = "prodNo" name = "prodNo" value = ""/>
-						<input type = "hidden" id = "tranCode" name = "tranCode" value = ""/>
-						<a href="javascript:fncUpdateTranCodeByProd('${resultPage.currentPage }', '${param.menu }','${product.prodNo }','2')"> 배송하기</a>
-					</c:when>
-					<c:when test = "${product.proTranCode eq '2' }">
-						배송중
-					</c:when>
-					<c:when test = "${product.proTranCode eq '3' }">
-						배송완료
-					</c:when>
-				</c:choose>
+					${product.stock }
 			</c:when>
 		</c:choose>
 		</td>	

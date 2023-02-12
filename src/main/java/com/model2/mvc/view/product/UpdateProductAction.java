@@ -26,6 +26,7 @@ public class UpdateProductAction extends Action {
 		product.setManuDate(request.getParameter("manuDate"));
 		product.setPrice(Integer.parseInt(request.getParameter("price")));
 		product.setFileName(request.getParameter("fileName"));
+		product.setStock(Integer.parseInt(request.getParameter("stock")));	
 
 		ProductService productService = new ProductServiceImpl();
 		productService.updateProduct(product);

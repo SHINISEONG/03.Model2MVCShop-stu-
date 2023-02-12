@@ -18,6 +18,16 @@
 		
 	
 		<td colspan="10" align="right">
+			<c:if test="${pageType eq 'purchase' }">
+			<select name="searchTranCodeCondition" class="ct_input_g" style="width:80px" onChange = "javaScript:fncGetProductList('${resultPage.currentPage }','${param.menu }')">
+					<c:if test = "${user.role eq 'admin'}">
+						<option value="1" ${ search.searchCondition == 1 ?" selected":""}>배송전</option>
+						<option value="2" ${ search.searchCondition == 2 ?" selected":""}>배송중</option>
+						<option value="3" ${ search.searchCondition == 3 ?" selected":""}>배송완료</option>
+					</c:if>
+			</select>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	
+			</c:if>
 			<c:if test="${pageType eq 'user' }">
 				<a href="javascript:${fncName }('1', 'orderByUserIdASC'${menu })">
 				ID순&nbsp;&nbsp;&nbsp;&nbsp;

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -104,6 +105,20 @@ function fncAddPurchase(prodNo) {
 		<td width="104" class="ct_write">등록일자</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">${product.regDate}</td>
+	</tr>
+	<tr>
+		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
+	</tr>
+	<tr>
+		<td width="104" class="ct_write">구매수량</td>
+		<td bgcolor="D6D6D6" width="1"></td>
+		<td class="ct_write01">
+			<select name="quantity" class="ct_input_g" style="width:80px">
+				<c:forEach var="i" begin = "1" end = "${product.stock }" >
+					<option value="${i }" >${i }</option>
+				</c:forEach>
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>

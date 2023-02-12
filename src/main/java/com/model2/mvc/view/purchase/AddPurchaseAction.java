@@ -26,7 +26,8 @@ public class AddPurchaseAction extends Action {
 		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
 		System.out.println("get param prodNo: " + prodNo);
 		Product product = productService.getProduct(prodNo);
-		
+		product.setStock(product.getStock()-Integer.parseInt(request.getParameter("quantity")));
+		productService.updateProduct(product);
 		User user = (User)session.getAttribute("user");
 		
 		System.out.println("addPurchaseAct로 불러온 prod: " + product);
@@ -41,7 +42,7 @@ public class AddPurchaseAction extends Action {
 		purchase.setDivyAddr(request.getParameter("receiverAddr"));
 		purchase.setDivyRequest(request.getParameter("receiverRequest"));
 		purchase.setDivyDate(request.getParameter("receiverDate"));
-		
+		purchase.setQuantity(Integer.parseInt(request.getParameter("quantity")));
 		purchase.setTranCode("1");
 		
 		System.out.println("addPurchaseAction안에서 모든 값 잘 세팅 됐니?"+purchase);
